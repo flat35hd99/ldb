@@ -1,11 +1,6 @@
 from string import Template
 import pandas as pd
 
-def divide_into_category(df):
-    categories = df["category"].fillna("未分類").unique()
-    # If you want sort the order of categories, please create your sorted() function.
-    return {category: df[df["category"] == category] for category in sorted(categories)}
-
 def create_category_html():
     output_filepath = ""
     
@@ -13,25 +8,27 @@ def create_category_html():
         category_table = Template(f.read())
     with open("templates/category_row.html", encoding="utf8") as f:
         category_row = Template(f.read())
-    with open("templates/available_remote.html", encoding="utf8") as f:
+    with open("templates/available_remote_mark.html", encoding="utf8") as f:
         available_remote_mark = f.read()
 
-    df = pd.read_excel("db.xlsx")
+    dfs = pd.read_excel("master.xlsx", sheet_name=["database", "category", "category_relation", "available_area"])
+    database_df = dfs["database"]
+    category_df = dfs["category"]
+    category_relation_df = dfs["category_relation"]
+    available_area_df = dfs["available_area"]
     
-    row = row_factory()
-    table = category_table_factory()
+    # 未実装
+    category2database = divide_into_category(database_df, category_df, category_relation_df)
     
-    table.append_row(row)
-    
-    table.to_html(output_filepath)
 
 def create_alphabet_html():
     pass
 
-def row_factory():
-    pass
-
-def category_table_factory():
+# (Category instance, database_df)のsetの配列を返す
+# [
+#   (Category, pandas.Dataframe),
+# ]
+def divide_into_category(database_df, category_df, category_relation_df):
     pass
 
 if __name__ == '__main__':
