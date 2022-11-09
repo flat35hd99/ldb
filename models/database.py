@@ -6,3 +6,7 @@ class Database():
         self.is_available_remote = is_available_remote
         self.available_area = available_area
         self.simultaneous_connections = simultaneous_connections
+
+class DatabaseFactory():
+    def create():
+        pass
