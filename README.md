@@ -60,3 +60,34 @@ TBW
 |name||
 |name_en||
 |background_color||
+
+## クラス設計
+
+簡単に、Model, View, Service, DataAccessorでわける。必要なら追加する
+
+## Model
+
+### Database
+
+### Category
+
+### AvailableArea
+
+## View
+
+それぞれのHTMLを生成する。
+
+## Service
+
+たとえば
+
+- `s.get_all_databases_service()`
+- `s.get_all_categories_service()`
+- `s.get_databases_by_category_id(category_id)`
+- `s.get_categories_belong_to_database(database_id)`
+
+## DataAccessor
+
+たとえば
+
+- `d.get_all_databases()`
