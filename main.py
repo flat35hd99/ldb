@@ -22,6 +22,8 @@ def main():
     # controller = Controller(service)
     # controller.create_category_html()
     # controller.create_alphabet_html()
+    # controller.create_category_html(lang = "en")
+    # controller.create_alphabet_html(lang = "en")  
 
 if __name__ == '__main__':
     main()
