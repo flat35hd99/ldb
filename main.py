@@ -2,7 +2,7 @@ from string import Template
 import pandas as pd
 from service import ServiceCollection
 
-def create_category_html():
+def main():
     output_filepath = ""
     
     with open("templates/category_table.html", encoding="utf8") as f:
@@ -23,16 +23,5 @@ def create_category_html():
     # controller.create_category_html()
     # controller.create_alphabet_html()
 
-def create_alphabet_html():
-    pass
-
-# (Category instance, database_df)のsetの配列を返す
-# [
-#   (Category, pandas.Dataframe),
-# ]
-def divide_into_category(database_df, category_df, category_relation_df):
-    pass
-
 if __name__ == '__main__':
-    create_category_html()
-    create_alphabet_html()
+    main()
