@@ -1,5 +1,6 @@
 from string import Template
 import pandas as pd
+from service import ServiceCollection
 
 def create_category_html():
     output_filepath = ""
@@ -17,9 +18,10 @@ def create_category_html():
     category_relation_df = dfs["category_relation"]
     available_area_df = dfs["available_area"]
     
-    # 未実装
-    category2database = divide_into_category(database_df, category_df, category_relation_df)
-    
+    service = ServiceCollection(database_df, available_area_df, category_df, category_relation_df)
+    # controller = Controller(service)
+    # controller.create_category_html()
+    # controller.create_alphabet_html()
 
 def create_alphabet_html():
     pass
