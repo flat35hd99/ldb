@@ -30,11 +30,15 @@ class ServiceCollection():
 
     def get_all_databases_by_category_id_service(self, category_id):
         for row in self.database_df.itertuples(index=False):
-            # TODO: Impl
-            pass
+            area = self.get_available_area_by_id(row.available_area_id)
+            simultaneous_connections = None
+            if (row.simultaneous_connections):
+                simultaneous_connections = row.simultaneous_connections
+
+            d = Database(id = row.id, name = row.name, url = row.url, is_available_remote=row.is_available_remote, available_area=area, simultaneous_connections=simultaneous_connections)
+            yield d
     
     def get_available_area_by_id(self, available_area_id):
         area_row = list(self.available_area_df[self.available_area_df.id == available_area_id].itertuples(index=False))[0]
         available_area = AvailableArea(id = available_area_id, name = area_row.name, background_color=BackGroundColor(area_row.background_color))
         return available_area
-
