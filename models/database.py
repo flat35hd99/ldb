@@ -1,3 +1,5 @@
+import math
+
 class Database():
     def __init__(self, id, name, url, is_available_remote, available_area, simultaneous_connections) -> None:
         self.id = id
@@ -11,12 +13,16 @@ class Database():
         return "yes" if self.is_available_remote else "no"
 
     def text_simultaneous_connections(self):
-        if self.simultaneous_connections == 0 or self.simultaneous_connections == None:
+        if self.simultaneous_connections == 0 or self.simultaneous_connections == None or math.isnan(self.simultaneous_connections):
             return ""
         elif self.simultaneous_connections == -1:
             return "無制限"
         else:
             return self.simultaneous_connections
+
+    def text_background_color(self):
+        aa = self.available_area
+        return aa.background_color.name
 
 class DatabaseFactory():
     def create():

@@ -15,16 +15,16 @@ class CategoryTable():
         template_row = ""
         with open("templates/category_table_row.html", mode="r", encoding="utf8") as f:
             template_row = Template(f.read())
-        
+
         rows = ""
         for d in self.databases:
             rows += template_row.substitute({
                 "name": d.name,
                 "url": d.url,
-                "description": "d.description",
+                "description": "仮説明文(非動的出力箇所)",
                 "is_available_remote": d.text_is_available_remote(),
                 "simultaneous_connections": d.text_simultaneous_connections(),
-                "color": d.available_area.background_color,
+                "color": d.text_background_color(),
                 "available_area": d.available_area.name,
             })
 

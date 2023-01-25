@@ -1,9 +1,9 @@
 from enum import Enum
 
 class BackGroundColor(Enum):
-    GREEN = 1
-    YELLOW = 2
-    RED = 3
+    green = "green"
+    yellow = "yellow"
+    red = "red"
 
 class AvailableArea():
     def __init__(self, id, name, background_color: BackGroundColor) -> None:
