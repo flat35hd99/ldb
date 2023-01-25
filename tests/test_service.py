@@ -5,6 +5,11 @@ from ..models.database import Database
 from ..models.available_area import BackGroundColor
 
 def new_service_collection():
+    """Create new ServiceCollection instance for testing
+
+    Returns:
+        ServiceCollection: ServiceCollection instance
+    """
     service = ServiceCollection(database_df=pd.DataFrame(data = {
         'id': [1],
         'name': ['exampleDB'],

@@ -32,4 +32,6 @@ def test_controller_initilization():
 def test_controller_create_category_html():
     s = new_service_collection()
     c = Controller(service = s)
-    c.create_category_html()
+    html = c.create_category_html()
+    assert type(html) == str
+    assert len(html) > 0
