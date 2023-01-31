@@ -40,5 +40,10 @@ class ServiceCollection():
     
     def get_available_area_by_id(self, available_area_id):
         area_row = list(self.available_area_df[self.available_area_df.id == available_area_id].itertuples(index=False))[0]
-        available_area = AvailableArea(id = available_area_id, name = area_row.name, background_color=BackGroundColor(area_row.background_color))
+
+        id = available_area_id
+        name = area_row.name
+        bg = BackGroundColor(area_row.background_color)
+
+        available_area = AvailableArea(id = id, name = name, background_color=bg)
         return available_area

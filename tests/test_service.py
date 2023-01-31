@@ -1,4 +1,3 @@
-from typing import Generator
 import pandas as pd
 from ..service import ServiceCollection
 from ..models.database import Database
@@ -20,7 +19,7 @@ def new_service_collection():
     }), avalable_area_df=pd.DataFrame(data={
         'id': [1],
         'name': ['学内'],
-        'background_color': 1
+        'background_color': 'green'
     }), category_df=pd.DataFrame(data={
         'id': [1],
         'name': ['社会科学']
@@ -40,7 +39,7 @@ def test_get_all_databases_service():
     db = list(dbs)[0]
     assert db.available_area.id is 1
     assert db.available_area.name is '学内'
-    assert db.available_area.background_color.value is BackGroundColor.GREEN.value
+    assert db.available_area.background_color.value is BackGroundColor.green.value
 
 def test_get_all_categories():
     service = new_service_collection()

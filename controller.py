@@ -1,7 +1,8 @@
 from views.category_table import CategoryTable
+from service import ServiceCollection
 
 class Controller():
-    def __init__(self, service):
+    def __init__(self, service: ServiceCollection):
         self.service = service
     
     def create_category_html(self, lang = "ja"):
