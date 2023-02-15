@@ -15,17 +15,15 @@ def new_service_collection():
         'url': ['https://example.com'],
         'is_available_remote': [True],
         'available_area_id': [1],
-        'simultaneous_connections': [None]
+        'simultaneous_connections': [None],
+        'category_id': [4],
     }), avalable_area_df=pd.DataFrame(data={
         'id': [1],
         'name': ['学内'],
         'background_color': 'green'
     }), category_df=pd.DataFrame(data={
-        'id': [1],
+        'id': [4],
         'name': ['社会科学']
-    }), category_relation_df=pd.DataFrame(data={
-        'database_id': [1],
-        'category_id': [1]
     }))
     return service
 

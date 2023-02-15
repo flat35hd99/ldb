@@ -8,13 +8,11 @@ class ServiceCollection():
     database_df: pd.DataFrame
     available_area_df: pd.DataFrame
     category_df: pd.DataFrame
-    category_relation_df: pd.DataFrame
 
-    def __init__(self, database_df: pd.DataFrame, avalable_area_df: pd.DataFrame, category_df: pd.DataFrame, category_relation_df: pd.DataFrame) -> None:
+    def __init__(self, database_df: pd.DataFrame, avalable_area_df: pd.DataFrame, category_df: pd.DataFrame) -> None:
         self.database_df = database_df
         self.available_area_df = avalable_area_df
         self.category_df = category_df
-        self.category_relation_df = category_relation_df
     
     def get_all_databases_service(self) -> Iterator[Database]:
         for row in self.database_df.itertuples(index=False):
@@ -43,9 +41,8 @@ class ServiceCollection():
             category
         except NameError:
             raise ValueError('Category not found')
-        
-        db_df = self.database_df.merge(self.category_relation_df, left_on='id', right_on='database_id', how='inner')
-        db_df = db_df[db_df.category_id == category_id]
+
+        db_df = self.database_df[self.database_df.category_id == category_id]
 
         for row in db_df.itertuples(index=False):
             area = self.get_available_area_by_id(row.available_area_id)

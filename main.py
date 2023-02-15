@@ -5,13 +5,12 @@ import os
 
 def main():
     # データの読み込み    
-    dfs = pd.read_excel("master.xlsx", sheet_name=["database", "category", "category_relation", "available_area"])
+    dfs = pd.read_excel("master.xlsx", sheet_name=["database", "category", "available_area"])
     database_df = dfs["database"]
     category_df = dfs["category"]
-    category_relation_df = dfs["category_relation"]
     available_area_df = dfs["available_area"]
 
-    service = ServiceCollection(database_df, available_area_df, category_df, category_relation_df)
+    service = ServiceCollection(database_df, available_area_df, category_df)
     controller = Controller(service)
 
     # もし output/がなければ作成する
