@@ -28,9 +28,11 @@ class ServiceCollection():
             yield d
     
     def get_all_categories(self) -> Iterator[Category]:
+        categories = []
         for row in self.category_df.itertuples(index=False):
-            c = Category(id = row.id, name = row.name, html_id = row.html_id)
-            yield c
+            categories.append(Category(id = row.id, name = row.name, html_id = row.html_id))
+        
+        return categories
 
     def get_all_databases_by_category_id_service(self, category_id) -> Iterator[Database]:
         for c in self.get_all_categories():
