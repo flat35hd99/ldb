@@ -29,7 +29,7 @@ class ServiceCollection():
     
     def get_all_categories(self) -> Iterator[Category]:
         for row in self.category_df.itertuples(index=False):
-            c = Category(id = row.id, name = row.name)
+            c = Category(id = row.id, name = row.name, html_id = row.html_id)
             yield c
 
     def get_all_databases_by_category_id_service(self, category_id) -> Iterator[Database]:

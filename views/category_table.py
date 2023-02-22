@@ -33,6 +33,7 @@ class CategoryTable():
             template_table = Template(f.read())
             result = template_table.substitute({
                 "category": self.category_model.name,
+                "id": self.category_model.html_id,
                 "rows": rows
             })
             return result

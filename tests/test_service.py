@@ -23,7 +23,8 @@ def new_service_collection():
         'background_color': 'green'
     }), category_df=pd.DataFrame(data={
         'id': [4],
-        'name': ['社会科学']
+        'name': ['社会科学'],
+        'html_id': ['shakai'],
     }))
     return service
 
