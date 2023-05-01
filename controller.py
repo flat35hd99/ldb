@@ -1,4 +1,4 @@
-from views.category_table import CategoryTable
+from views.table import CategoryTable, InitialTable
 from service import ServiceCollection
 
 class Controller():
@@ -30,3 +30,20 @@ class Controller():
             created_html += category_table.str()
         
         return created_html
+
+    def create_alphabet_html(self, lang = "ja"):
+        # 先頭文字のリストを取得する
+        initials = self.service.get_all_initials()
+        
+        created_html = ""
+        
+        # TODO: テーブルより上部の静的内容を追加する
+        # TODO: 頭文字のリストを追加する
+        
+        # 先頭文字ごとにデータベースのリストを取得し、HTMLに変換する
+        # あらかじめ表示順にinitialsをソートしておくことで、
+        # 順番に生成されたHTMLを結合していく
+        for initial_char in initials:
+            databases = self.service.get_all_databases_by_initial(initial_char)
+            initial_table = InitialTable(initial_char=initial_char, databases=databases)
+            created_html += initial_table.str()

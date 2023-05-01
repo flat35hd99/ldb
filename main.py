@@ -21,7 +21,8 @@ def main():
     with open("output/category_jp.html", mode="w", encoding="utf8") as f:
         f.write(controller.create_category_html())
 
-    # controller.create_alphabet_html()
+    with open("output/alphabet_jp.html", mode="w", encoding="utf8") as f:
+        f.write(controller.create_alphabet_html())
     # controller.create_category_html(lang = "en")
     # controller.create_alphabet_html(lang = "en")  
 

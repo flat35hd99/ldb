@@ -1,4 +1,4 @@
-from ..views.category_table import CategoryTable
+from ..views.table import CategoryTable
 from ..service import ServiceCollection
 
 from .test_service import new_service_collection

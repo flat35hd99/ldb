@@ -24,7 +24,7 @@ class ServiceCollection():
             if (row.simultaneous_connections):
                 simultaneous_connections = row.simultaneous_connections
             
-            d = Database(id = row.id, name = row.name, url = row.url, is_available_remote=row.is_available_remote, available_area=area, simultaneous_connections=simultaneous_connections)
+            d = Database(id = row.id, name = row.name, url = row.url, is_available_remote=row.is_available_remote, available_area=area, simultaneous_connections=simultaneous_connections, description=row.description, initial_char=row.initial)
             yield d
     
     def get_all_categories(self) -> Iterator[Category]:
@@ -52,7 +52,7 @@ class ServiceCollection():
             if (row.simultaneous_connections):
                 simultaneous_connections = row.simultaneous_connections
 
-            d = Database(id = row.id, name = row.name, url = row.url, is_available_remote=row.is_available_remote, available_area=area, simultaneous_connections=simultaneous_connections)
+            d = Database(id = row.id, name = row.name, url = row.url, is_available_remote=row.is_available_remote, available_area=area, simultaneous_connections=simultaneous_connections, description=row.description, initial_char=row.initial)
             yield d
     
     def get_available_area_by_id(self, available_area_id):
@@ -64,3 +64,14 @@ class ServiceCollection():
 
         available_area = AvailableArea(id = id, name = name, background_color=bg)
         return available_area
+
+    def get_all_initials(self) -> Iterator[str]:
+        return list(self.database_df.initial.unique())
+
+    def get_all_databases_by_initial(self, initial_char: str) -> Iterator[Database]:
+        result = []
+        for d in self.get_all_databases_service():
+            if d.initial_char == initial_char:
+                result.append(d)
+        
+        return result
