@@ -64,6 +64,7 @@ class InitialTable():
                 "simultaneous_connections": d.text_simultaneous_connections(),
                 "color": d.text_background_color(),
                 "available_area": d.available_area.name,
+                "category": d.text_categories(),
             })
 
         # TODO: 絶対パス、相対パスをいい感じに設定する

@@ -47,3 +47,5 @@ class Controller():
             databases = self.service.get_all_databases_by_initial(initial_char)
             initial_table = InitialTable(initial_char=initial_char, databases=databases)
             created_html += initial_table.str()
+
+        return created_html

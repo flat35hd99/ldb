@@ -1,7 +1,7 @@
 import math
 
 class Database():
-    def __init__(self, id, name, url, is_available_remote, available_area, simultaneous_connections, description, initial_char) -> None:
+    def __init__(self, id, name, url, is_available_remote, available_area, simultaneous_connections, description, initial_char, categories) -> None:
         self.id = id
         self.name = name
         self.url = url
@@ -10,6 +10,7 @@ class Database():
         self.simultaneous_connections = simultaneous_connections
         self.description = description
         self.initial_char = initial_char
+        self.cateogries = categories
     
     def text_is_available_remote(self):
         return "yes" if self.is_available_remote else "no"
@@ -25,6 +26,9 @@ class Database():
     def text_background_color(self):
         aa = self.available_area
         return aa.background_color.name
+
+    def text_categories(self):
+        return ", ".join([c.name for c in self.cateogries])
 
 class DatabaseFactory():
     def create():

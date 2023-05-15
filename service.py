@@ -8,11 +8,13 @@ class ServiceCollection():
     database_df: pd.DataFrame
     available_area_df: pd.DataFrame
     category_df: pd.DataFrame
+    categories: Iterator[Category]
 
     def __init__(self, database_df: pd.DataFrame, avalable_area_df: pd.DataFrame, category_df: pd.DataFrame) -> None:
         self.database_df = database_df
         self.available_area_df = avalable_area_df
         self.category_df = category_df
+        self.categories = None 
     
     def get_all_databases_service(self) -> Iterator[Database]:
         for row in self.database_df.itertuples(index=False):
@@ -24,13 +26,35 @@ class ServiceCollection():
             if (row.simultaneous_connections):
                 simultaneous_connections = row.simultaneous_connections
             
-            d = Database(id = row.id, name = row.name, url = row.url, is_available_remote=row.is_available_remote, available_area=area, simultaneous_connections=simultaneous_connections, description=row.description, initial_char=row.initial)
+            # Get category
+            # A Database belongs to one or more categories
+            all_categories = self.get_all_categories()
+            categories = []
+            if type(row.category_id) == int:
+                for c in all_categories:
+                    if (c.id == row.category_id):
+                        categories.append(c)
+                        break
+            else:
+                for category_id in row.category_id:
+                    # Find category from categories
+                    for c in all_categories:
+                        if (c.id == category_id):
+                            categories.append(c)
+                            break
+            
+            d = Database(id = row.id, name = row.name, url = row.url, is_available_remote=row.is_available_remote, available_area=area, simultaneous_connections=simultaneous_connections, description=row.description, initial_char=row.initial, categories=categories)
             yield d
     
     def get_all_categories(self) -> Iterator[Category]:
+        if (self.categories):
+            return self.categories
+        
         categories = []
         for row in self.category_df.itertuples(index=False):
             categories.append(Category(id = row.id, name = row.name, html_id = row.html_id))
+        
+        self.categories = categories
         
         return categories
 
@@ -51,8 +75,25 @@ class ServiceCollection():
             simultaneous_connections = None
             if (row.simultaneous_connections):
                 simultaneous_connections = row.simultaneous_connections
+            
+            # Get category
+            # A Database belongs to one or more categories
+            all_categories = self.get_all_categories()
+            categories = []
+            if type(row.category_id) == int:
+                for c in all_categories:
+                    if (c.id == row.category_id):
+                        categories.append(c)
+                        break
+            else:
+                for category_id in row.category_id:
+                    # Find category from categories
+                    for c in all_categories:
+                        if (c.id == category_id):
+                            categories.append(c)
+                            break
 
-            d = Database(id = row.id, name = row.name, url = row.url, is_available_remote=row.is_available_remote, available_area=area, simultaneous_connections=simultaneous_connections, description=row.description, initial_char=row.initial)
+            d = Database(id = row.id, name = row.name, url = row.url, is_available_remote=row.is_available_remote, available_area=area, simultaneous_connections=simultaneous_connections, description=row.description, initial_char=row.initial, categories=categories)
             yield d
     
     def get_available_area_by_id(self, available_area_id):
