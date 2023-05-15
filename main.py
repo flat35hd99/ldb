@@ -3,9 +3,12 @@ from service import ServiceCollection
 from controller import Controller
 import os
 
+
 def main():
-    # データの読み込み    
-    dfs = pd.read_excel("master.xlsx", sheet_name=["database", "category", "available_area"])
+    # データの読み込み
+    dfs = pd.read_excel(
+        "master.xlsx", sheet_name=["database", "category", "available_area"]
+    )
     database_df = dfs["database"]
     category_df = dfs["category"]
     available_area_df = dfs["available_area"]
@@ -24,7 +27,8 @@ def main():
     with open("output/alphabet_jp.html", mode="w", encoding="utf8") as f:
         f.write(controller.create_alphabet_html())
     # controller.create_category_html(lang = "en")
-    # controller.create_alphabet_html(lang = "en")  
+    # controller.create_alphabet_html(lang = "en")
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()

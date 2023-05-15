@@ -1,11 +1,13 @@
 from enum import Enum
 
+
 class BackGroundColor(Enum):
     green = "green"
     yellow = "yellow"
     red = "red"
 
-class AvailableArea():
+
+class AvailableArea:
     def __init__(self, id, name, background_color: BackGroundColor) -> None:
         self.id = id
         self.name = name
