@@ -3,6 +3,7 @@ from models.database import Database
 from models.available_area import AvailableArea, BackGroundColor
 from models.category import Category
 from collections.abc import Iterator
+import functools
 
 class ServiceCollection():
     database_df: pd.DataFrame
@@ -114,5 +115,12 @@ class ServiceCollection():
         for d in self.get_all_databases_service():
             if d.initial_char == initial_char:
                 result.append(d)
+        
+        # Sort by second and third character
+        # -1がa側、1がb側, 0が同じ。
+        def compare_initial(a: Database, b: Database):
+            pass
+
+        # result = sorted(result, key=functools.cmp_to_key(compare_initial))
         
         return result
