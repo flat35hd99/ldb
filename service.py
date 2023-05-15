@@ -59,6 +59,8 @@ class ServiceCollection:
                 simultaneous_connections=simultaneous_connections,
                 description=row.description,
                 initial_char=row.initial,
+                second_char=row.second_char,
+                third_char=row.third_char,
                 categories=categories,
             )
             yield d
@@ -121,6 +123,8 @@ class ServiceCollection:
                 simultaneous_connections=simultaneous_connections,
                 description=row.description,
                 initial_char=row.initial,
+                second_char=row.second_char,
+                third_char=row.third_char,
                 categories=categories,
             )
             yield d
@@ -149,10 +153,20 @@ class ServiceCollection:
                 result.append(d)
 
         # Sort by second and third character
-        # -1がa側、1がb側, 0が同じ。
+        # aとbで、aがはじめの方なら-1, aが後ろの方なら+1, 同じなら0。
         def compare_initial(a: Database, b: Database):
-            pass
+            if a.second_char < b.second_char:
+                return -1
+            elif a.second_char > b.second_char:
+                return 1
+            else:
+                if a.third_char < b.third_char:
+                    return -1
+                elif a.third_char > b.third_char:
+                    return 1
+                else:
+                    return 0
 
-        # result = sorted(result, key=functools.cmp_to_key(compare_initial))
+        result = sorted(result, key=functools.cmp_to_key(compare_initial))
 
         return result

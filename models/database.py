@@ -12,6 +12,8 @@ class Database:
         simultaneous_connections,
         description,
         initial_char,
+        second_char,
+        third_char,
         categories,
     ) -> None:
         self.id = id
@@ -22,8 +24,8 @@ class Database:
         self.simultaneous_connections = simultaneous_connections
         self.description = description
         self.initial_char = initial_char
-        # self.second_char = second_char
-        # self.third_char = third_char
+        self.second_char = second_char
+        self.third_char = third_char
         self.cateogries = categories
 
     def text_is_available_remote(self):
