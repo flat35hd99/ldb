@@ -6,7 +6,7 @@ class Controller:
     def __init__(self, service: ServiceCollection):
         self.service = service
 
-    def create_category_html(self, lang="ja"):
+    def create_category_html(self, lang="jp"):
         # カテゴリのリストを取得する
         categories = self.service.get_all_categories()
 
@@ -34,7 +34,7 @@ class Controller:
 
         return created_html
 
-    def create_alphabet_html(self, lang="ja"):
+    def create_alphabet_html(self, lang="jp"):
         # 先頭文字のリストを取得する
         initials = self.service.get_all_initials()
 
@@ -49,6 +49,6 @@ class Controller:
         for initial_char in initials:
             databases = self.service.get_all_databases_by_initial(initial_char)
             initial_table = InitialTable(initial_char=initial_char, databases=databases)
-            created_html += initial_table.str()
+            created_html += initial_table.str(lang=lang)
 
         return created_html

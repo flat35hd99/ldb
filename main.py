@@ -26,9 +26,12 @@ def main():
 
     with open("output/alphabet_jp.html", mode="w", encoding="utf8") as f:
         f.write(controller.create_alphabet_html())
-    # controller.create_category_html(lang = "en")
-    # controller.create_alphabet_html(lang = "en")
 
+    with open("output/category_en.html", mode="w", encoding="utf8") as f:
+        f.write(controller.create_category_html(lang="en"))
+
+    with open("output/alphabet_en.html", mode="w", encoding="utf8") as f:
+        f.write(controller.create_alphabet_html(lang="en"))
 
 if __name__ == "__main__":
     main()
