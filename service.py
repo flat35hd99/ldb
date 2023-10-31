@@ -61,8 +61,6 @@ class ServiceCollection:
                 description=row.description,
                 description_en=row.description_en,
                 initial_char=row.initial,
-                second_char=row.second_char,
-                third_char=row.third_char,
                 categories=categories,
             )
             yield d
@@ -127,8 +125,6 @@ class ServiceCollection:
                 description=row.description,
                 description_en=row.description_en,
                 initial_char=row.initial,
-                second_char=row.second_char,
-                third_char=row.third_char,
                 categories=categories,
             )
             yield d
@@ -155,22 +151,5 @@ class ServiceCollection:
         for d in self.get_all_databases_service():
             if d.initial_char == initial_char:
                 result.append(d)
-
-        # Sort by second and third character
-        # aとbで、aがはじめの方なら-1, aが後ろの方なら+1, 同じなら0。
-        def compare_initial(a: Database, b: Database):
-            if a.second_char < b.second_char:
-                return -1
-            elif a.second_char > b.second_char:
-                return 1
-            else:
-                if a.third_char < b.third_char:
-                    return -1
-                elif a.third_char > b.third_char:
-                    return 1
-                else:
-                    return 0
-
-        result = sorted(result, key=functools.cmp_to_key(compare_initial))
 
         return result

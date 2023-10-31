@@ -14,8 +14,6 @@ class Database:
         description,
         description_en,
         initial_char,
-        second_char,
-        third_char,
         categories,
     ) -> None:
         self.id = id
@@ -34,8 +32,6 @@ class Database:
         else:
             self.description_en = description_en
         self.initial_char = initial_char
-        self.second_char = second_char
-        self.third_char = third_char
         self.cateogries = categories
 
     def text_is_available_remote(self):
