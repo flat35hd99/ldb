@@ -1,6 +1,6 @@
 from views.table import CategoryTable, InitialTable
 from service import ServiceCollection
-
+from string import Template
 
 class Controller:
     def __init__(self, service: ServiceCollection):
@@ -32,7 +32,14 @@ class Controller:
             category_table = CategoryTable(category=c, databases=databases)
             created_html += category_table.str()
 
-        return created_html
+        # 全体のtemplateに流し込む
+        # Viewに切り分ける必要あり。
+        lang_dir = "" if lang == "jp" else "/en"
+        with open(f"templates{lang_dir}/category.html", "r") as f:
+            template = Template(f.read())
+            whole_html = template.substitute({"tables": created_html})
+
+        return whole_html
 
     def create_alphabet_html(self, lang="jp"):
         # 先頭文字のリストを取得する
