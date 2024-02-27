@@ -35,7 +35,7 @@ class Controller:
         # 全体のtemplateに流し込む
         # Viewに切り分ける必要あり。
         lang_dir = "" if lang == "jp" else "/en"
-        with open(f"templates{lang_dir}/category.html", "r") as f:
+        with open(f"templates{lang_dir}/category.html", "r", encoding="utf8") as f:
             template = Template(f.read())
             whole_html = template.substitute({"tables": created_html})
 
