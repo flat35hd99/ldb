@@ -34,8 +34,27 @@ def format_simultaneous_connections(simultaneous_connections, lang="jp"):
         else:
             return str(simultaneous_connections)
 
+available_remote_mark = None
+available_remote_mark_en = None
+def format_available_remote(is_available_remote, lang="jp"):
+    if not is_available_remote:
+        return ""
+    if lang == "jp":
+        with open("templates/available_remote_mark.html", mode="r", encoding="utf8") as f:
+            global available_remote_mark
+            available_remote_mark = f.read()
+            return available_remote_mark
+    elif lang == "en":
+        with open("templates/en/available_remote_mark.html", mode="r", encoding="utf8") as f:
+            global available_remote_mark_en
+            available_remote_mark_en = f.read()
+            return available_remote_mark_en
+    else:
+        raise ValueError("lang must be 'jp' or 'en'")
+
 def format_template_obj_with(template_obj, lang="jp"):
     template_obj["simultaneous_connections"] = format_simultaneous_connections(template_obj["simultaneous_connections"], lang=lang)
+    template_obj["available_remote"] = format_available_remote(template_obj["is_available_remote"], lang=lang)
     return template_obj
 
 def get_name(database, lang="jp"):
@@ -74,7 +93,7 @@ class CategoryTable:
                 "name": get_name(database=d, lang=lang),
                 "url": d.url,
                 "description": d.description,
-                "is_available_remote": d.text_is_available_remote(),
+                "is_available_remote": d.is_available_remote,
                 "simultaneous_connections": d.simultaneous_connections,
                 "color": d.text_background_color(),
                 "available_area": d.available_area.name,
@@ -145,7 +164,7 @@ class InitialTable:
                 "name": get_name(database=d, lang=lang),
                 "url": d.url,
                 "description": d.description,
-                "is_available_remote": d.text_is_available_remote(),
+                "is_available_remote": d.is_available_remote,
                 "simultaneous_connections": d.simultaneous_connections,
                 "color": d.text_background_color(),
                 "available_area": d.available_area.name,
