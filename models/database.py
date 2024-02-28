@@ -45,11 +45,16 @@ class Database:
             self.description_en = description_en
         self.initial_char = initial_char
         self.cateogries = categories
-        self.provider = provider
+
+        if pd.isna(provider):
+            self.provider = None
+        else:
+            self.provider = provider
         if pd.isna(provider_en):
             self.provider_en = None
         else:
             self.provider_en = provider_en
+
         if pd.isna(platform):
             self.platform = None
         else:

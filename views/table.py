@@ -10,6 +10,10 @@ def update_template_obj_with(template_obj, database, lang="en"):
     if lang == "en":
         if database.name_en:
             template_obj["name"] = database.name_en
+        if database.provider_en:
+            template_obj["provider"] = database.provider_en
+        if database.platform_en:
+            template_obj["platform"] = database.platform_en
         if database.description_en:
             template_obj["description"] = database.description_en
         if database.simultaneous_connections_en:
@@ -32,7 +36,7 @@ def format_simultaneous_connections(simultaneous_connections, lang="jp"):
             else:
                 raise ValueError("lang must be 'jp' or 'en'")
         else:
-            return str(simultaneous_connections)
+            return str(int(simultaneous_connections))
 
 available_remote_mark = None
 available_remote_mark_en = None
@@ -55,17 +59,17 @@ def format_available_remote(is_available_remote, lang="jp"):
 def format_template_obj_with(template_obj, lang="jp"):
     template_obj["simultaneous_connections"] = format_simultaneous_connections(template_obj["simultaneous_connections"], lang=lang)
     template_obj["available_remote"] = format_available_remote(template_obj["is_available_remote"], lang=lang)
+    template_obj["provider"] = f' ({template_obj["provider"]})' if template_obj["provider"] else ""
+    template_obj["platform"] = f' [{template_obj["platform"]}]' if template_obj["platform"] else ""
     return template_obj
 
 def get_name(database, lang="jp"):
-    if lang == "jp" and database.provider is not None:
-        return f"{database.name}({database.provider})"
-    elif lang == "en" and database.provider is not None:
-        return f"{database.name_en}({database.provider_en})"
-    elif lang == "jp":
+    if lang == "jp":
         return database.name
     elif lang == "en":
         return database.name_en
+    else:
+        raise ValueError("lang must be 'jp' or 'en'")
 
 class CategoryTable:
     category_model: Category
@@ -91,6 +95,8 @@ class CategoryTable:
         for d in self.databases:
             template_obj = {
                 "name": get_name(database=d, lang=lang),
+                "provider": d.provider,
+                "platform": d.platform,
                 "url": d.url,
                 "description": d.description,
                 "is_available_remote": d.is_available_remote,
@@ -162,6 +168,8 @@ class InitialTable:
             template_obj = {
                 "initial": initial_element,
                 "name": get_name(database=d, lang=lang),
+                "provider": d.provider,
+                "platform": d.platform,
                 "url": d.url,
                 "description": d.description,
                 "is_available_remote": d.is_available_remote,
