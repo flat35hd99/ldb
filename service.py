@@ -62,6 +62,8 @@ class ServiceCollection:
                 description_en=row.description_en,
                 initial_char=row.initial,
                 categories=categories,
+                provider=row.provider,
+                provider_en=row.provider_en
             )
             yield d
 
@@ -126,6 +128,8 @@ class ServiceCollection:
                 description_en=row.description_en,
                 initial_char=row.initial,
                 categories=categories,
+                provider=row.provider,
+                provider_en=row.provider_en
             )
             yield d
 

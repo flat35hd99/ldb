@@ -15,6 +15,8 @@ class Database:
         description_en,
         initial_char,
         categories,
+        provider,
+        provider_en,
     ) -> None:
         self.id = id
         self.name = name
@@ -33,6 +35,11 @@ class Database:
             self.description_en = description_en
         self.initial_char = initial_char
         self.cateogries = categories
+        self.provider = provider
+        if pd.isna(provider_en):
+            self.provider_en = None
+        else:
+            self.provider_en = provider_en
 
     def text_is_available_remote(self):
         return "R" if self.is_available_remote else "no"
