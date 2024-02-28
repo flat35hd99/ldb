@@ -14,6 +14,16 @@ def update_template_obj_with(template_obj, database, lang="en"):
     else:
         raise ValueError("update_template_obj_with() lang must be 'en'")
 
+def get_name(database, lang="jp"):
+    if lang == "jp" and database.provider is not None:
+        return f"{database.name}({database.provider})"
+    elif lang == "en" and database.provider is not None:
+        return f"{database.name_en}({database.provider_en})"
+    elif lang == "jp":
+        return database.name
+    elif lang == "en":
+        return database.name_en
+
 class CategoryTable:
     category_model: Category
     databases: Iterator[Database]
@@ -37,7 +47,7 @@ class CategoryTable:
         rows = ""
         for d in self.databases:
             template_obj = {
-                "name": d.name,
+                "name": get_name(database=d, lang=lang),
                 "url": d.url,
                 "description": d.description,
                 "is_available_remote": d.text_is_available_remote(),
@@ -98,14 +108,15 @@ class InitialTable:
             raise ValueError("lang must be 'jp' or 'en'")
 
         rows = ""
+        is_first = True # 最初の行だけアルファベットを表示させるためのフラグ
         for d in self.databases:
             initial_element = f'<th rowspan="{len(self.databases)}">{self.initial_char}</th>' if is_first else ""
-            is_first = True # 最初の行だけアルファベットを表示させるためのフラグ
+            is_first = False
             
             # はじめに日本語をデフォルトとして設定し、存在するときだけ英語を設定する
             template_obj = {
                 "initial": initial_element,
-                "name": d.name,
+                "name": get_name(database=d, lang=lang),
                 "url": d.url,
                 "description": d.description,
                 "is_available_remote": d.text_is_available_remote(),
