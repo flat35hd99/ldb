@@ -5,6 +5,26 @@ from models.category import Category
 from collections.abc import Iterator
 import functools
 
+def factory_database(row, area, categories):
+    d = Database(
+        id=row.id,
+        name=row.name,
+        name_en=row.name_en,
+        url=row.url,
+        is_available_remote=row.is_available_remote,
+        available_area=area,
+        simultaneous_connections=row.simultaneous_connections,
+        simultaneous_connections_en=row.simultaneous_connections_en,
+        description=row.description,
+        description_en=row.description_en,
+        initial_char=row.initial,
+        categories=categories,
+        provider=row.provider,
+        provider_en=row.provider_en,
+        platform=row.platform,
+        platform_en=row.platform_en,
+    )
+    return d
 
 class ServiceCollection:
     database_df: pd.DataFrame
@@ -46,24 +66,7 @@ class ServiceCollection:
                             categories.append(c)
                             break
 
-            d = Database(
-                id=row.id,
-                name=row.name,
-                name_en=row.name_en,
-                url=row.url,
-                is_available_remote=row.is_available_remote,
-                available_area=area,
-                simultaneous_connections=row.simultaneous_connections,
-                simultaneous_connections_en=row.simultaneous_connections_en,
-                description=row.description,
-                description_en=row.description_en,
-                initial_char=row.initial,
-                categories=categories,
-                provider=row.provider,
-                provider_en=row.provider_en,
-                platform=row.platform,
-                platform_en=row.platform_en,
-            )
+            d = factory_database(row, area, categories)
             yield d
 
     def get_all_categories(self) -> Iterator[Category]:
@@ -112,24 +115,7 @@ class ServiceCollection:
                             categories.append(c)
                             break
 
-            d = Database(
-                id=row.id,
-                name=row.name,
-                name_en=row.name_en,
-                url=row.url,
-                is_available_remote=row.is_available_remote,
-                available_area=area,
-                simultaneous_connections=row.simultaneous_connections,
-                simultaneous_connections_en=row.simultaneous_connections_en,
-                description=row.description,
-                description_en=row.description_en,
-                initial_char=row.initial,
-                categories=categories,
-                provider=row.provider,
-                provider_en=row.provider_en,
-                platform=row.platform,
-                platform_en=row.platform_en,
-            )
+            d = factory_database(row, area, categories)
             yield d
 
     def get_available_area_by_id(self, available_area_id):
