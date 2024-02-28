@@ -134,11 +134,14 @@ class ServiceCollection:
             yield d
 
     def get_available_area_by_id(self, available_area_id):
-        area_row = list(
-            self.available_area_df[
-                self.available_area_df.id == available_area_id
-            ].itertuples(index=False)
-        )[0]
+        try:
+            area_row = list(
+                self.available_area_df[
+                    self.available_area_df.id == available_area_id
+                ].itertuples(index=False)
+            )[0]
+        except IndexError:
+            raise ValueError(f"avairable_area_id {available_area_id}が見つかりません。databaseの表とavailable_areaの表が正しく紐づいているか確認してください。")
 
         id = available_area_id
         name = area_row.name
