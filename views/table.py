@@ -82,7 +82,7 @@ class InitialTable:
     databases: Iterator[Database]
 
     def __init__(self, initial_char: str, databases: Iterator[Database]):
-        self.initial_char = initial_char
+        self.initial_char = initial_char.upper()
         self.databases = databases
 
     def str(self, lang="jp"):
@@ -99,9 +99,12 @@ class InitialTable:
 
         rows = ""
         for d in self.databases:
+            initial_element = f'<th rowspan="{len(self.databases)}">{self.initial_char}</th>' if is_first else ""
+            is_first = True # 最初の行だけアルファベットを表示させるためのフラグ
+            
             # はじめに日本語をデフォルトとして設定し、存在するときだけ英語を設定する
             template_obj = {
-                "initial": self.initial_char,
+                "initial": initial_element,
                 "name": d.name,
                 "url": d.url,
                 "description": d.description,
@@ -116,6 +119,9 @@ class InitialTable:
                 update_template_obj_with(template_obj, d, lang=lang)
 
             rows += template_row.substitute(template_obj)
+            
+            if is_first:
+                is_first = False
 
         if lang == "jp":
             with open("templates/alphabet_table.html", mode="r", encoding="utf8") as f:

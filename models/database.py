@@ -35,7 +35,7 @@ class Database:
         self.cateogries = categories
 
     def text_is_available_remote(self):
-        return "yes" if self.is_available_remote else "no"
+        return "R" if self.is_available_remote else "no"
 
     def text_simultaneous_connections(self):
         if (
