@@ -1,3 +1,4 @@
+import math
 from models.category import Category
 from models.database import Database
 from string import Template
@@ -11,8 +12,31 @@ def update_template_obj_with(template_obj, database, lang="en"):
             template_obj["name"] = database.name_en
         if database.description_en:
             template_obj["description"] = database.description_en
+        if database.simultaneous_connections_en:
+            template_obj["simultaneous_connections"] = database.simultaneous_connections_en
     else:
-        raise ValueError("update_template_obj_with() lang must be 'en'")
+        raise ValueError("プログラムのエラー: update_template_obj_with関数はlang='en'のときのみサポートしています。")
+
+def format_simultaneous_connections(simultaneous_connections, lang="jp"):
+        if (
+            simultaneous_connections == 0
+            or simultaneous_connections == None
+            or math.isnan(simultaneous_connections)
+        ):
+            return ""
+        elif simultaneous_connections == -1:
+            if lang == "jp":
+                return "無制限"
+            elif lang == "en":
+                return "Unlimited"
+            else:
+                raise ValueError("lang must be 'jp' or 'en'")
+        else:
+            return str(simultaneous_connections)
+
+def format_template_obj_with(template_obj, lang="jp"):
+    template_obj["simultaneous_connections"] = format_simultaneous_connections(template_obj["simultaneous_connections"], lang=lang)
+    return template_obj
 
 def get_name(database, lang="jp"):
     if lang == "jp" and database.provider is not None:
@@ -51,13 +75,15 @@ class CategoryTable:
                 "url": d.url,
                 "description": d.description,
                 "is_available_remote": d.text_is_available_remote(),
-                "simultaneous_connections": d.text_simultaneous_connections(),
+                "simultaneous_connections": d.simultaneous_connections,
                 "color": d.text_background_color(),
                 "available_area": d.available_area.name,
             }
             
             if lang == "en":
                 update_template_obj_with(template_obj, d, lang=lang)
+
+            template_obj = format_template_obj_with(template_obj, lang=lang)
 
             rows += template_row.substitute(template_obj)
 
@@ -120,7 +146,7 @@ class InitialTable:
                 "url": d.url,
                 "description": d.description,
                 "is_available_remote": d.text_is_available_remote(),
-                "simultaneous_connections": d.text_simultaneous_connections(),
+                "simultaneous_connections": d.simultaneous_connections,
                 "color": d.text_background_color(),
                 "available_area": d.available_area.name,
                 "category": d.text_categories(),
@@ -129,6 +155,7 @@ class InitialTable:
             if lang == "en":
                 update_template_obj_with(template_obj, d, lang=lang)
 
+            template_obj = format_template_obj_with(template_obj, lang=lang)
             rows += template_row.substitute(template_obj)
             
             if is_first:

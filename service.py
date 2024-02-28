@@ -29,10 +29,6 @@ class ServiceCollection:
             # itertules() shoule return a single row
             area = self.get_available_area_by_id(row.available_area_id)
 
-            simultaneous_connections = None
-            if row.simultaneous_connections:
-                simultaneous_connections = row.simultaneous_connections
-
             # Get category
             # A Database belongs to one or more categories
             all_categories = self.get_all_categories()
@@ -57,7 +53,8 @@ class ServiceCollection:
                 url=row.url,
                 is_available_remote=row.is_available_remote,
                 available_area=area,
-                simultaneous_connections=simultaneous_connections,
+                simultaneous_connections=row.simultaneous_connections,
+                simultaneous_connections_en=row.simultaneous_connections_en,
                 description=row.description,
                 description_en=row.description_en,
                 initial_char=row.initial,
@@ -95,9 +92,6 @@ class ServiceCollection:
 
         for row in db_df.itertuples(index=False):
             area = self.get_available_area_by_id(row.available_area_id)
-            simultaneous_connections = None
-            if row.simultaneous_connections:
-                simultaneous_connections = row.simultaneous_connections
 
             # Get category
             # A Database belongs to one or more categories
@@ -123,7 +117,8 @@ class ServiceCollection:
                 url=row.url,
                 is_available_remote=row.is_available_remote,
                 available_area=area,
-                simultaneous_connections=simultaneous_connections,
+                simultaneous_connections=row.simultaneous_connections,
+                simultaneous_connections_en=row.simultaneous_connections_en,
                 description=row.description,
                 description_en=row.description_en,
                 initial_char=row.initial,

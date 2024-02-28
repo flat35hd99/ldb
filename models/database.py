@@ -11,6 +11,7 @@ class Database:
         is_available_remote,
         available_area,
         simultaneous_connections,
+        simultaneous_connections_en,
         description,
         description_en,
         initial_char,
@@ -27,7 +28,14 @@ class Database:
         self.url = url
         self.is_available_remote = is_available_remote
         self.available_area = available_area
-        self.simultaneous_connections = simultaneous_connections
+        if pd.isna(simultaneous_connections):
+            self.simultaneous_connections = None
+        else:
+            self.simultaneous_connections = simultaneous_connections
+        if pd.isna(simultaneous_connections_en):
+            self.simultaneous_connections_en = None
+        else:
+            self.simultaneous_connections_en = simultaneous_connections_en
         self.description = description
         if pd.isna(description_en):
             self.description_en = None
@@ -43,18 +51,6 @@ class Database:
 
     def text_is_available_remote(self):
         return "R" if self.is_available_remote else "no"
-
-    def text_simultaneous_connections(self):
-        if (
-            self.simultaneous_connections == 0
-            or self.simultaneous_connections == None
-            or math.isnan(self.simultaneous_connections)
-        ):
-            return ""
-        elif self.simultaneous_connections == -1:
-            return "無制限"
-        else:
-            return self.simultaneous_connections
 
     def text_background_color(self):
         aa = self.available_area
