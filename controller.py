@@ -33,7 +33,7 @@ class Controller:
             created_html += category_table.str()
 
         # 全体のtemplateに流し込む
-        # Viewに切り分ける必要あり。
+        # TODO: Viewに切り分ける必要あり。
         lang_dir = "" if lang == "jp" else "/en"
         with open(f"templates{lang_dir}/category.html", "r", encoding="utf8") as f:
             template = Template(f.read())
@@ -58,4 +58,11 @@ class Controller:
             initial_table = InitialTable(initial_char=initial_char, databases=databases)
             created_html += initial_table.str(lang=lang)
 
-        return created_html
+        # 全体のtemplateに流し込む
+        # TODO: Viewに切り分ける必要あり。
+        lang_dir = "" if lang == "jp" else "/en"
+        with open(f"templates{lang_dir}/alphabet.html", "r", encoding="utf8") as f:
+            template = Template(f.read())
+            whole_html = template.substitute({"tables": created_html})
+
+        return whole_html
