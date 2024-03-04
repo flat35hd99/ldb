@@ -3,6 +3,9 @@ from service import ServiceCollection
 from controller import Controller
 import os
 
+# 設定
+# カテゴリ別表示において、言語列を表示するかどうか
+with_literature_language = True
 
 def main():
     # データの読み込み
@@ -23,13 +26,13 @@ def main():
         os.mkdir("output")
 
     with open("output/category_jp.html", mode="w", encoding="utf8") as f:
-        f.write(controller.create_category_html())
+        f.write(controller.create_category_html(with_literature_language=with_literature_language))
 
     with open("output/alphabet_jp.html", mode="w", encoding="utf8") as f:
         f.write(controller.create_alphabet_html())
 
     with open("output/category_en.html", mode="w", encoding="utf8") as f:
-        f.write(controller.create_category_html(lang="en"))
+        f.write(controller.create_category_html(lang="en", with_literature_language=with_literature_language))
 
     with open("output/alphabet_en.html", mode="w", encoding="utf8") as f:
         f.write(controller.create_alphabet_html(lang="en"))

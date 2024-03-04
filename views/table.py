@@ -113,19 +113,27 @@ class CategoryTable:
     category_model: Category
     databases: Iterator[Database]
 
-    def __init__(self, category: Category, databases: Iterator[Database]):
+    def __init__(self, category: Category, databases: Iterator[Database], with_literature_language=False):
         self.category_model = category
         self.databases = databases
 
-    def str(self, lang="jp"):
+    def str(self, lang="jp", with_literature_language=False):
         # 各行のテンプレートをあらかじめメモリに読み込んでおく
         template_row = ""
         if lang == "jp":
-            with open("templates/category_table_row.html", mode="r", encoding="utf8") as f:
-                template_row = Template(f.read())
+            if with_literature_language:
+                with open("templates/category_table_row_with_literature_language.html", mode="r", encoding="utf8") as f:
+                    template_row = Template(f.read())
+            else:
+                with open("templates/category_table_row.html", mode="r", encoding="utf8") as f:
+                    template_row = Template(f.read())
         elif lang == "en":
-            with open("templates/en/category_table_row.html", mode="r", encoding="utf8") as f:
-                template_row = Template(f.read())
+            if with_literature_language:
+                with open("templates/en/category_table_row_with_literature_language.html", mode="r", encoding="utf8") as f:
+                    template_row = Template(f.read())
+            else:
+                with open("templates/en/category_table_row.html", mode="r", encoding="utf8") as f:
+                    template_row = Template(f.read())
         else:
             raise ValueError("lang must be 'jp' or 'en'")
 
@@ -154,27 +162,37 @@ class CategoryTable:
             rows += template_row.substitute(template_obj)
 
         if lang == "jp":
-            with open("templates/category_table.html", mode="r", encoding="utf8") as f:
-                template_table = Template(f.read())
-                result = template_table.substitute(
-                    {
-                        "category": self.category_model.name,
-                        "html_id": self.category_model.html_id,
-                        "rows": rows,
-                    }
-                )
-                return result
+            if with_literature_language:
+                with open("templates/category_table_with_literature_language.html", mode="r", encoding="utf8") as f:
+                    template_table = Template(f.read())
+            else:
+                with open("templates/category_table.html", mode="r", encoding="utf8") as f:
+                    template_table = Template(f.read())
+            
+            result = template_table.substitute(
+                {
+                    "category": self.category_model.name,
+                    "html_id": self.category_model.html_id,
+                    "rows": rows,
+                }
+            )
+            return result
         elif lang == "en":
-            with open("templates/en/category_table.html", mode="r", encoding="utf8") as f:
-                template_table = Template(f.read())
-                result = template_table.substitute(
-                    {
-                        "category": self.category_model.name_en,
-                        "html_id": self.category_model.html_id,
-                        "rows": rows,
-                    }
-                )
-                return result
+            if with_literature_language:
+                with open("templates/en/category_table_with_literature_language.html", mode="r", encoding="utf8") as f:
+                    template_table = Template(f.read())
+            else:                
+                with open("templates/en/category_table.html", mode="r", encoding="utf8") as f:
+                    template_table = Template(f.read())
+            
+            result = template_table.substitute(
+                {
+                    "category": self.category_model.name_en,
+                    "html_id": self.category_model.html_id,
+                    "rows": rows,
+                }
+            )
+            return result
         else:
             raise ValueError("lang must be 'jp' or 'en'")
 
