@@ -7,13 +7,14 @@ import os
 def main():
     # データの読み込み
     dfs = pd.read_excel(
-        "DBmaster.xlsx", sheet_name=["database", "category", "available_area"]
+        "DBmaster.xlsx", sheet_name=["database", "category", "available_area", "literature_language"]
     )
     database_df = dfs["database"]
     category_df = dfs["category"]
     available_area_df = dfs["available_area"]
+    literature_language_df = dfs["literature_language"]
 
-    service = ServiceCollection(database_df, available_area_df, category_df)
+    service = ServiceCollection(database_df, available_area_df, category_df, literature_language_df)
     controller = Controller(service)
 
     # もし output/がなければ作成する

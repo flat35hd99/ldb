@@ -81,6 +81,16 @@ def format_category(categories, lang="jp"):
         ]
     )
 
+def format_literal_languages(literature_languages, lang="jp"):
+    if not literature_languages:
+        return ""
+    if lang == "jp":
+        return "<br>".join([l.name for l in literature_languages])
+    elif lang == "en":
+        return "<br>".join([l.name_en for l in literature_languages])
+    else:
+        raise ValueError("lang must be 'jp' or 'en'")
+
 def format_template_obj_with(template_obj, lang="jp"):
     template_obj["simultaneous_connections"] = format_simultaneous_connections(template_obj["simultaneous_connections"], lang=lang)
     template_obj["available_remote"] = format_available_remote(template_obj["is_available_remote"], lang=lang)
@@ -88,6 +98,7 @@ def format_template_obj_with(template_obj, lang="jp"):
     template_obj["platform"] = f' [{template_obj["platform"]}]' if template_obj["platform"] else ""
     template_obj["category"] = format_category(template_obj["category"], lang=lang)
     template_obj["note"] = template_obj["note"] if template_obj["note"] else ""
+    template_obj["literature_language"] = format_literal_languages(template_obj["literature_language"], lang=lang)
     return template_obj
 
 def get_name(database, lang="jp"):
@@ -131,6 +142,7 @@ class CategoryTable:
                 "color": d.text_background_color(),
                 "available_area": d.available_area.name,
                 "category": [], # 不要
+                "literature_language": d.literature_languages,
                 "note": d.note,
             }
             
@@ -206,6 +218,7 @@ class InitialRows:
                 "color": d.text_background_color(),
                 "available_area": d.available_area.name,
                 "category": d.categories,
+                "literature_language": [], # 不要
                 "note": d.note,
             }
 
