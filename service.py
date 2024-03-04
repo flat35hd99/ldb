@@ -5,6 +5,7 @@ from models.category import Category
 from models.literature_language import LiteratureLanguage
 from collections.abc import Iterator
 
+
 def factory_database(row, area, categories, literature_languages):
     d = Database(
         id=row.id,
@@ -28,6 +29,7 @@ def factory_database(row, area, categories, literature_languages):
         literature_languages=literature_languages,
     )
     return d
+
 
 class ServiceCollection:
     database_df: pd.DataFrame
@@ -71,7 +73,9 @@ class ServiceCollection:
                             categories.append(c)
 
             # Get literature languages
-            literature_languages = self.get_literature_languages_by_id(row.literature_language_id)
+            literature_languages = self.get_literature_languages_by_id(
+                row.literature_language_id
+            )
 
             d = factory_database(row, area, categories, literature_languages)
             yield d
@@ -82,7 +86,11 @@ class ServiceCollection:
 
         categories = []
         for row in self.category_df.itertuples(index=False):
-            categories.append(Category(id=row.id, name=row.name, name_en=row.name_en, html_id=row.html_id))
+            categories.append(
+                Category(
+                    id=row.id, name=row.name, name_en=row.name_en, html_id=row.html_id
+                )
+            )
 
         self.categories = categories
 
@@ -123,7 +131,9 @@ class ServiceCollection:
                             break
 
             # Get literature languages
-            literature_languages = self.get_literature_languages_by_id(row.literature_language_id)
+            literature_languages = self.get_literature_languages_by_id(
+                row.literature_language_id
+            )
 
             d = factory_database(row, area, categories, literature_languages)
             yield d
@@ -136,14 +146,18 @@ class ServiceCollection:
                 ].itertuples(index=False)
             )[0]
         except IndexError:
-            raise ValueError(f"avairable_area_id {available_area_id}が見つかりません。databaseの表とavailable_areaの表が正しく紐づいているか確認してください。")
+            raise ValueError(
+                f"avairable_area_id {available_area_id}が見つかりません。databaseの表とavailable_areaの表が正しく紐づいているか確認してください。"
+            )
 
         id = available_area_id
         name = area_row.name
         name_en = area_row.name_en
         bg = BackGroundColor(area_row.background_color)
 
-        available_area = AvailableArea(id=id, name=name, name_en=name_en, background_color=bg)
+        available_area = AvailableArea(
+            id=id, name=name, name_en=name_en, background_color=bg
+        )
         return available_area
 
     def get_literature_languages_by_id(self, literature_language_id):
@@ -154,12 +168,12 @@ class ServiceCollection:
                 ].itertuples(index=False)
             )
         except IndexError:
-            raise ValueError(f"literature_language_id {literature_language_id}が見つかりません。databaseの表とliterature_languageの表が正しく紐づいているか確認してください。")
+            raise ValueError(
+                f"literature_language_id {literature_language_id}が見つかりません。databaseの表とliterature_languageの表が正しく紐づいているか確認してください。"
+            )
 
         return [
-            LiteratureLanguage(
-                id=row.id, name=row.name, name_en=row.name_en
-            )
+            LiteratureLanguage(id=row.id, name=row.name, name_en=row.name_en)
             for row in language_rows
         ]
 

@@ -1,6 +1,7 @@
 import math
 import pandas as pd
 
+
 class Database:
     def __init__(
         self,
@@ -67,7 +68,7 @@ class Database:
             self.platform_en = None
         else:
             self.platform_en = platform
-        
+
         if pd.isna(note):
             self.note = None
         else:

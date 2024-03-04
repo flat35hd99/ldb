@@ -2,6 +2,7 @@ from views.table import CategoryTable, InitialRows
 from service import ServiceCollection
 from string import Template
 
+
 class Controller:
     def __init__(self, service: ServiceCollection):
         self.service = service
@@ -16,7 +17,9 @@ class Controller:
         created_html += '<div style="margin:10px 0;">'
         for c in categories:
             if lang == "jp":
-                created_html += f'<span class="bullet3">▼</span><a href="#{c.html_id}">{c.name}</a>'
+                created_html += (
+                    f'<span class="bullet3">▼</span><a href="#{c.html_id}">{c.name}</a>'
+                )
             elif lang == "en":
                 created_html += f'<span class="bullet3">▼</span><a href="#{c.html_id}">{c.name_en}</a>'
             else:
@@ -31,7 +34,9 @@ class Controller:
         for c in categories:
             databases = self.service.get_all_databases_by_category_id_service(c.id)
             category_table = CategoryTable(category=c, databases=databases)
-            created_html += category_table.str(lang=lang, with_literature_language=with_literature_language)
+            created_html += category_table.str(
+                lang=lang, with_literature_language=with_literature_language
+            )
 
         # 全体のtemplateに流し込む
         # TODO: Viewに切り分ける必要あり。
@@ -47,7 +52,7 @@ class Controller:
         initials = self.service.get_all_initials()
 
         created_html = ""
-        
+
         # 先頭文字ごとにデータベースのリストを取得し、HTMLに変換する
         # あらかじめ表示順にinitialsをソートしておくことで、
         # 順番に生成されたHTMLを結合していく
