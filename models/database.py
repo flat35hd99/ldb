@@ -20,6 +20,8 @@ class Database:
         provider_en,
         platform,
         platform_en,
+        note,
+        note_en,
     ) -> None:
         self.id = id
         self.name = name
@@ -63,6 +65,15 @@ class Database:
             self.platform_en = None
         else:
             self.platform_en = platform
+        
+        if pd.isna(note):
+            self.note = None
+        else:
+            self.note = note
+        if pd.isna(note_en):
+            self.note_en = None
+        else:
+            self.note_en = note_en
 
     def text_is_available_remote(self):
         return "R" if self.is_available_remote else "no"

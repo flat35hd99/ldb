@@ -23,6 +23,8 @@ def factory_database(row, area, categories):
         provider_en=row.provider_en,
         platform=row.platform,
         platform_en=row.platform_en,
+        note=row.note,
+        note_en=row.note_en,
     )
     return d
 
