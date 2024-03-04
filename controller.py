@@ -17,9 +17,12 @@ class Controller:
         # カテゴリのリストを生成する
         created_html += '<div style="margin:10px 0;">'
         for c in categories:
-            created_html += (
-                f'<span class="bullet3">▼</span><a href="#{c.html_id}">{c.name}</a>'
-            )
+            if lang == "jp":
+                created_html += f'<span class="bullet3">▼</span><a href="#{c.html_id}">{c.name}</a>'
+            elif lang == "en":
+                created_html += f'<span class="bullet3">▼</span><a href="#{c.html_id}">{c.name_en}</a>'
+            else:
+                raise ValueError("lang must be 'jp' or 'en'")
         created_html += "</div>"
 
         # TODO: カテゴリのリスト以下のカラー例を追加する
@@ -30,7 +33,7 @@ class Controller:
         for c in categories:
             databases = self.service.get_all_databases_by_category_id_service(c.id)
             category_table = CategoryTable(category=c, databases=databases)
-            created_html += category_table.str()
+            created_html += category_table.str(lang=lang)
 
         # 全体のtemplateに流し込む
         # TODO: Viewに切り分ける必要あり。
