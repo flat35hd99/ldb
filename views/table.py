@@ -56,11 +56,29 @@ def format_available_remote(is_available_remote, lang="jp"):
     else:
         raise ValueError("lang must be 'jp' or 'en'")
 
+def format_category(categories, lang="jp"):
+    if lang == "jp":
+        category_template = Template('<a href="index.html#$html_id">$name</a>')
+    elif lang == "en":
+        category_template = Template('<a href="index_e.html#$html_id">$name_en</a>')
+    else:
+        raise ValueError("lang must be 'jp' or 'en'")
+    
+    return "<br>".join(
+        [
+            category_template.substitute(
+                {"html_id": c.html_id, "name": c.name, "name_en": c.name_en}
+            )
+            for c in categories
+        ]
+    )
+
 def format_template_obj_with(template_obj, lang="jp"):
     template_obj["simultaneous_connections"] = format_simultaneous_connections(template_obj["simultaneous_connections"], lang=lang)
     template_obj["available_remote"] = format_available_remote(template_obj["is_available_remote"], lang=lang)
     template_obj["provider"] = f' ({template_obj["provider"]})' if template_obj["provider"] else ""
     template_obj["platform"] = f' [{template_obj["platform"]}]' if template_obj["platform"] else ""
+    template_obj["category"] = format_category(template_obj["category"], lang=lang)
     return template_obj
 
 def get_name(database, lang="jp"):
@@ -103,6 +121,7 @@ class CategoryTable:
                 "simultaneous_connections": d.simultaneous_connections,
                 "color": d.text_background_color(),
                 "available_area": d.available_area.name,
+                "category": [], # 不要
             }
             
             if lang == "en":
@@ -176,7 +195,7 @@ class InitialTable:
                 "simultaneous_connections": d.simultaneous_connections,
                 "color": d.text_background_color(),
                 "available_area": d.available_area.name,
-                "category": d.text_categories(),
+                "category": d.categories,
             }
 
             if lang == "en":

@@ -44,7 +44,7 @@ class Database:
         else:
             self.description_en = description_en
         self.initial_char = initial_char
-        self.cateogries = categories
+        self.categories = categories
 
         if pd.isna(provider):
             self.provider = None
@@ -70,9 +70,6 @@ class Database:
     def text_background_color(self):
         aa = self.available_area
         return aa.background_color.name
-
-    def text_categories(self):
-        return ", ".join([c.name for c in self.cateogries])
 
 
 class DatabaseFactory:

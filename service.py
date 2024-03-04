@@ -57,14 +57,12 @@ class ServiceCollection:
                 for c in all_categories:
                     if c.id == row.category_id:
                         categories.append(c)
-                        break
             else:
                 for category_id in row.category_id:
                     # Find category from categories
                     for c in all_categories:
                         if c.id == category_id:
                             categories.append(c)
-                            break
 
             d = factory_database(row, area, categories)
             yield d
@@ -75,7 +73,7 @@ class ServiceCollection:
 
         categories = []
         for row in self.category_df.itertuples(index=False):
-            categories.append(Category(id=row.id, name=row.name, html_id=row.html_id))
+            categories.append(Category(id=row.id, name=row.name, name_en=row.name_en, html_id=row.html_id))
 
         self.categories = categories
 
