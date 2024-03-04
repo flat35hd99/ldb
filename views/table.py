@@ -10,6 +10,8 @@ def update_template_obj_with(template_obj, database, lang="en"):
     if lang == "en":
         if database.name_en:
             template_obj["name"] = database.name_en
+        if database.available_area.name_en:
+            template_obj["available_area"] = database.available_area.name_en
         if database.provider_en:
             template_obj["provider"] = database.provider_en
         if database.platform_en:

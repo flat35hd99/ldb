@@ -130,9 +130,10 @@ class ServiceCollection:
 
         id = available_area_id
         name = area_row.name
+        name_en = area_row.name_en
         bg = BackGroundColor(area_row.background_color)
 
-        available_area = AvailableArea(id=id, name=name, background_color=bg)
+        available_area = AvailableArea(id=id, name=name, name_en=name_en, background_color=bg)
         return available_area
 
     def get_all_initials(self) -> Iterator[str]:
