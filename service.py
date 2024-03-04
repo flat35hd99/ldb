@@ -2,10 +2,10 @@ import pandas as pd
 from models.database import Database
 from models.available_area import AvailableArea, BackGroundColor
 from models.category import Category
+from models.literature_language import LiteratureLanguage
 from collections.abc import Iterator
-import functools
 
-def factory_database(row, area, categories):
+def factory_database(row, area, categories, literature_languages):
     d = Database(
         id=row.id,
         name=row.name,
@@ -25,6 +25,7 @@ def factory_database(row, area, categories):
         platform_en=row.platform_en,
         note=row.note,
         note_en=row.note_en,
+        literature_languages=literature_languages,
     )
     return d
 
@@ -32,6 +33,7 @@ class ServiceCollection:
     database_df: pd.DataFrame
     available_area_df: pd.DataFrame
     category_df: pd.DataFrame
+    literature_language_df: pd.DataFrame
     categories: Iterator[Category]
 
     def __init__(
@@ -39,10 +41,12 @@ class ServiceCollection:
         database_df: pd.DataFrame,
         avalable_area_df: pd.DataFrame,
         category_df: pd.DataFrame,
+        literature_language_df: pd.DataFrame,
     ) -> None:
         self.database_df = database_df
         self.available_area_df = avalable_area_df
         self.category_df = category_df
+        self.literature_language_df = literature_language_df
         self.categories = None
 
     def get_all_databases_service(self) -> Iterator[Database]:
@@ -66,7 +70,10 @@ class ServiceCollection:
                         if c.id == category_id:
                             categories.append(c)
 
-            d = factory_database(row, area, categories)
+            # Get literature languages
+            literature_languages = self.get_literature_languages_by_id(row.literature_language_id)
+
+            d = factory_database(row, area, categories, literature_languages)
             yield d
 
     def get_all_categories(self) -> Iterator[Category]:
@@ -115,7 +122,10 @@ class ServiceCollection:
                             categories.append(c)
                             break
 
-            d = factory_database(row, area, categories)
+            # Get literature languages
+            literature_languages = self.get_literature_languages_by_id(row.literature_language_id)
+
+            d = factory_database(row, area, categories, literature_languages)
             yield d
 
     def get_available_area_by_id(self, available_area_id):
@@ -135,6 +145,23 @@ class ServiceCollection:
 
         available_area = AvailableArea(id=id, name=name, name_en=name_en, background_color=bg)
         return available_area
+
+    def get_literature_languages_by_id(self, literature_language_id):
+        try:
+            language_rows = list(
+                self.literature_language_df[
+                    self.literature_language_df.id == literature_language_id
+                ].itertuples(index=False)
+            )
+        except IndexError:
+            raise ValueError(f"literature_language_id {literature_language_id}が見つかりません。databaseの表とliterature_languageの表が正しく紐づいているか確認してください。")
+
+        return [
+            LiteratureLanguage(
+                id=row.id, name=row.name, name_en=row.name_en
+            )
+            for row in language_rows
+        ]
 
     def get_all_initials(self) -> Iterator[str]:
         return list(self.database_df.initial.unique())

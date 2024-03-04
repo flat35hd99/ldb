@@ -6,13 +6,11 @@ class Controller:
     def __init__(self, service: ServiceCollection):
         self.service = service
 
-    def create_category_html(self, lang="jp"):
+    def create_category_html(self, lang="jp", with_literature_language=False):
         # カテゴリのリストを取得する
         categories = self.service.get_all_categories()
 
         created_html = ""
-
-        # TODO: カテゴリのリストより上部の静的内容を追加する
 
         # カテゴリのリストを生成する
         created_html += '<div style="margin:10px 0;">'
@@ -33,7 +31,7 @@ class Controller:
         for c in categories:
             databases = self.service.get_all_databases_by_category_id_service(c.id)
             category_table = CategoryTable(category=c, databases=databases)
-            created_html += category_table.str(lang=lang)
+            created_html += category_table.str(lang=lang, with_literature_language=with_literature_language)
 
         # 全体のtemplateに流し込む
         # TODO: Viewに切り分ける必要あり。

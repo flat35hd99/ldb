@@ -22,6 +22,7 @@ class Database:
         platform_en,
         note,
         note_en,
+        literature_languages,
     ) -> None:
         self.id = id
         self.name = name
@@ -75,6 +76,11 @@ class Database:
             self.note_en = None
         else:
             self.note_en = note_en
+
+        if pd.isna(literature_languages):
+            self.literature_languages = []
+        else:
+            self.literature_languages = literature_languages
 
     def text_is_available_remote(self):
         return "R" if self.is_available_remote else "no"
