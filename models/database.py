@@ -27,6 +27,7 @@ class Database:
         self.name = name
         if pd.isna(name_en):
             self.name_en = None
+            print(f"{name}のname_enが空です。")
         else:
             self.name_en = name_en
         self.url = url
