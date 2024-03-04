@@ -1,4 +1,4 @@
-from views.table import CategoryTable, InitialTable
+from views.table import CategoryTable, InitialRows
 from service import ServiceCollection
 from string import Template
 
@@ -49,16 +49,13 @@ class Controller:
         initials = self.service.get_all_initials()
 
         created_html = ""
-
-        # TODO: テーブルより上部の静的内容を追加する
-        # TODO: 頭文字のリストを追加する
-
+        
         # 先頭文字ごとにデータベースのリストを取得し、HTMLに変換する
         # あらかじめ表示順にinitialsをソートしておくことで、
         # 順番に生成されたHTMLを結合していく
         for initial_char in initials:
             databases = self.service.get_all_databases_by_initial(initial_char)
-            initial_table = InitialTable(initial_char=initial_char, databases=databases)
+            initial_table = InitialRows(initial_char=initial_char, databases=databases)
             created_html += initial_table.str(lang=lang)
 
         # 全体のtemplateに流し込む
@@ -66,6 +63,6 @@ class Controller:
         lang_dir = "" if lang == "jp" else "/en"
         with open(f"templates{lang_dir}/alphabet.html", "r", encoding="utf8") as f:
             template = Template(f.read())
-            whole_html = template.substitute({"tables": created_html})
+            whole_html = template.substitute({"rows": created_html})
 
         return whole_html

@@ -167,7 +167,7 @@ class CategoryTable:
             raise ValueError("lang must be 'jp' or 'en'")
 
 
-class InitialTable:
+class InitialRows:
     initial_char: str
     databases: Iterator[Database]
 
@@ -218,13 +218,4 @@ class InitialTable:
             if is_first:
                 is_first = False
 
-        if lang == "jp":
-            with open("templates/alphabet_table.html", mode="r", encoding="utf8") as f:
-                template_table = Template(f.read())
-                result = template_table.substitute({"rows": rows})
-                return result
-        elif lang == "en":
-            with open("templates/en/alphabet_table.html", mode="r", encoding="utf8") as f:
-                template_table = Template(f.read())
-                result = template_table.substitute({"rows": rows})
-                return result
+        return rows
