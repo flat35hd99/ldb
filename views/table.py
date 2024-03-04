@@ -18,10 +18,14 @@ def update_template_obj_with(template_obj, database, lang="en"):
             template_obj["description"] = database.description_en
         if database.simultaneous_connections_en:
             template_obj["simultaneous_connections"] = database.simultaneous_connections_en
+        if database.note_en:
+            template_obj["note"] = database.note_en
     else:
         raise ValueError("プログラムのエラー: update_template_obj_with関数はlang='en'のときのみサポートしています。")
 
 def format_simultaneous_connections(simultaneous_connections, lang="jp"):
+        if(type(simultaneous_connections) == str):
+            return simultaneous_connections
         if (
             simultaneous_connections == 0
             or simultaneous_connections == None
@@ -35,8 +39,10 @@ def format_simultaneous_connections(simultaneous_connections, lang="jp"):
                 return "Unlimited"
             else:
                 raise ValueError("lang must be 'jp' or 'en'")
+        elif(type(simultaneous_connections) == int):
+            return str(simultaneous_connections)
         else:
-            return str(int(simultaneous_connections))
+            raise ValueError("simultaneous_connections must be int or str")
 
 available_remote_mark = None
 available_remote_mark_en = None
@@ -79,6 +85,7 @@ def format_template_obj_with(template_obj, lang="jp"):
     template_obj["provider"] = f' ({template_obj["provider"]})' if template_obj["provider"] else ""
     template_obj["platform"] = f' [{template_obj["platform"]}]' if template_obj["platform"] else ""
     template_obj["category"] = format_category(template_obj["category"], lang=lang)
+    template_obj["note"] = template_obj["note"] if template_obj["note"] else ""
     return template_obj
 
 def get_name(database, lang="jp"):
@@ -122,6 +129,7 @@ class CategoryTable:
                 "color": d.text_background_color(),
                 "available_area": d.available_area.name,
                 "category": [], # 不要
+                "note": d.note,
             }
             
             if lang == "en":
@@ -196,6 +204,7 @@ class InitialTable:
                 "color": d.text_background_color(),
                 "available_area": d.available_area.name,
                 "category": d.categories,
+                "note": d.note,
             }
 
             if lang == "en":
