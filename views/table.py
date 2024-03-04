@@ -190,7 +190,7 @@ class InitialRows:
         rows = ""
         is_first = True # 最初の行だけアルファベットを表示させるためのフラグ
         for d in self.databases:
-            initial_element = f'<th rowspan="{len(self.databases)}">{self.initial_char}</th>' if is_first else ""
+            initial_element = f'<th rowspan="{len(self.databases)}" id="db{self.initial_char}">{self.initial_char}</th>' if is_first else ""
             is_first = False
             
             # はじめに日本語をデフォルトとして設定し、存在するときだけ英語を設定する
