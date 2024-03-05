@@ -14,6 +14,7 @@ def factory_database(row, area, categories, literature_languages):
         name_note=row.name_note,
         name_note_en=row.name_note_en,
         url=row.url,
+        url_en=row.url_en,
         is_available_remote=row.is_available_remote,
         available_area=area,
         simultaneous_connections=row.simultaneous_connections,

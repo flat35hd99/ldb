@@ -9,6 +9,7 @@ class Database:
         name,
         name_en,
         url,
+        url_en,
         is_available_remote,
         available_area,
         simultaneous_connections,
@@ -46,6 +47,10 @@ class Database:
             self.name_note_en = name_note_en
         
         self.url = url
+        if pd.isna(url_en):
+            self.url_en = None
+        else:
+            self.url_en = url_en
         self.is_available_remote = is_available_remote
         self.available_area = available_area
         if pd.isna(simultaneous_connections):
