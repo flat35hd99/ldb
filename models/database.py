@@ -34,7 +34,7 @@ class Database:
             print(f"{name}のname_enが空です。")
         else:
             self.name_en = name_en
-        
+
         if pd.isna(name_note):
             self.name_note = None
         else:
@@ -43,7 +43,7 @@ class Database:
             self.name_note_en = None
         else:
             self.name_note_en = name_note_en
-        
+
         self.url = url
         if pd.isna(url_en):
             self.url_en = None
@@ -98,7 +98,7 @@ class Database:
             self.jp_only = False
         else:
             self.jp_only = bool(jp_only)
-            
+
     def text_is_available_remote(self):
         return "R" if self.is_available_remote else "no"
 

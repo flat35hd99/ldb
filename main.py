@@ -14,9 +14,7 @@ def main():
     category_df = dfs["category"]
     available_area_df = dfs["available_area"]
 
-    service = ServiceCollection(
-        database_df, available_area_df, category_df
-    )
+    service = ServiceCollection(database_df, available_area_df, category_df)
     controller = Controller(service)
 
     # もし output/がなければ作成する
@@ -25,19 +23,13 @@ def main():
         os.mkdir("output")
 
     with open("output/category_jp.html", mode="w", encoding="utf8") as f:
-        f.write(
-            controller.create_category_html()
-        )
+        f.write(controller.create_category_html())
 
     with open("output/alphabet_jp.html", mode="w", encoding="utf8") as f:
         f.write(controller.create_alphabet_html())
 
     with open("output/category_en.html", mode="w", encoding="utf8") as f:
-        f.write(
-            controller.create_category_html(
-                lang="en"
-            )
-        )
+        f.write(controller.create_category_html(lang="en"))
 
     with open("output/alphabet_en.html", mode="w", encoding="utf8") as f:
         f.write(controller.create_alphabet_html(lang="en"))

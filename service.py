@@ -150,7 +150,6 @@ class ServiceCollection:
         )
         return available_area
 
-
     def get_all_initials(self) -> Iterator[str]:
         return [str(s) for s in list(self.database_df.initial.unique())]
 

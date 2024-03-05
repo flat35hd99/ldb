@@ -110,6 +110,7 @@ def format_name_note(name_note, lang="jp"):
     else:
         raise ValueError("lang must be 'jp' or 'en'")
 
+
 # テンプレートに渡すオブジェクトを文字列へ変換する
 def format_template_obj_with(template_obj, lang="jp"):
     template_obj["name_note"] = format_name_note(template_obj["name_note"], lang=lang)
@@ -195,9 +196,7 @@ class CategoryTable:
             rows += template_row.substitute(template_obj)
 
         if lang == "jp":
-            with open(
-                "templates/category_table.html", mode="r", encoding="utf8"
-            ) as f:
+            with open("templates/category_table.html", mode="r", encoding="utf8") as f:
                 template_table = Template(f.read())
 
             result = template_table.substitute(
@@ -273,7 +272,7 @@ class InitialRows:
                 "simultaneous_connections": d.simultaneous_connections,
                 "color": d.text_background_color(),
                 "available_area": d.available_area.name,
-                "category": d.categories,
+                "category": self.filter_categories(d.categories),
                 "note": d.note,
                 "jp_only": d.jp_only,
             }
@@ -288,3 +287,25 @@ class InitialRows:
                 is_first = False
 
         return rows
+
+    def filter_categories(self, categories: list[Category]):
+        # カテゴリに総合分野が含まれていないときは、そのまま
+        # カテゴリに総合分野が含まれているかつ、その他に自然科学、生命科学、人文科学、社会科学のみを含むときは
+        # 自然科学、生命科学、人文科学、社会科学を除外する
+        # カテゴリに総合分野が含まれているかつ、その他に自然科学、生命科学、人文科学、社会科学以外を含むときは
+        # 総合分野を除外する
+        sougou_id = 1
+        shizen_seimei_jinbun_syakai_ids = {3, 4, 15, 16}
+
+        category_ids = set([c.id for c in categories])
+        if sougou_id not in category_ids:
+            return categories
+        else:
+            if set(category_ids).issubset(
+                shizen_seimei_jinbun_syakai_ids | {sougou_id}
+            ):
+                return [
+                    c for c in categories if c.id not in shizen_seimei_jinbun_syakai_ids
+                ]
+            else:
+                return [c for c in categories if c.id != sougou_id]

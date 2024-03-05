@@ -34,9 +34,7 @@ class Controller:
         for c in categories:
             databases = self.service.get_all_databases_by_category_id_service(c.id)
             category_table = CategoryTable(category=c, databases=databases)
-            created_html += category_table.str(
-                lang=lang
-            )
+            created_html += category_table.str(lang=lang)
 
         # 全体のtemplateに流し込む
         # TODO: Viewに切り分ける必要あり。
