@@ -24,6 +24,9 @@ class Database:
         note,
         note_en,
         literature_languages,
+        jp_only,
+        name_note,
+        name_note_en,
     ) -> None:
         self.id = id
         self.name = name
@@ -32,6 +35,16 @@ class Database:
             print(f"{name}のname_enが空です。")
         else:
             self.name_en = name_en
+        
+        if pd.isna(name_note):
+            self.name_note = None
+        else:
+            self.name_note = name_note
+        if pd.isna(name_note_en):
+            self.name_note_en = None
+        else:
+            self.name_note_en = name_note_en
+        
         self.url = url
         self.is_available_remote = is_available_remote
         self.available_area = available_area
@@ -83,6 +96,11 @@ class Database:
         else:
             self.literature_languages = literature_languages
 
+        if pd.isna(jp_only):
+            self.jp_only = False
+        else:
+            self.jp_only = bool(jp_only)
+            
     def text_is_available_remote(self):
         return "R" if self.is_available_remote else "no"
 

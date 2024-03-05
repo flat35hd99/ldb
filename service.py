@@ -11,6 +11,8 @@ def factory_database(row, area, categories, literature_languages):
         id=row.id,
         name=row.name,
         name_en=row.name_en,
+        name_note=row.name_note,
+        name_note_en=row.name_note_en,
         url=row.url,
         is_available_remote=row.is_available_remote,
         available_area=area,
@@ -27,6 +29,7 @@ def factory_database(row, area, categories, literature_languages):
         note=row.note,
         note_en=row.note_en,
         literature_languages=literature_languages,
+        jp_only=row.jp_only,
     )
     return d
 

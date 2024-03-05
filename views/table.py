@@ -11,6 +11,8 @@ def update_template_obj_with(template_obj, database, lang="en"):
     if lang == "en":
         if database.name_en:
             template_obj["name"] = database.name_en
+        if database.name_note_en:
+            template_obj["name_note"] = database.name_note_en
         if database.available_area.name_en:
             template_obj["available_area"] = database.available_area.name_en
         if database.provider_en:
@@ -106,8 +108,19 @@ def format_literal_languages(literature_languages, lang="jp"):
     else:
         raise ValueError("lang must be 'jp' or 'en'")
 
+def format_name_note(name_note, lang="jp"):
+    if not name_note:
+        return ""
+    if lang == "jp":
+        return f" ({name_note})"
+    elif lang == "en":
+        return f" ({name_note})"
+    else:
+        raise ValueError("lang must be 'jp' or 'en'")
 
+# テンプレートに渡すオブジェクトを文字列へ変換する
 def format_template_obj_with(template_obj, lang="jp"):
+    template_obj["name_note"] = format_name_note(template_obj["name_note"], lang=lang)
     template_obj["simultaneous_connections"] = format_simultaneous_connections(
         template_obj["simultaneous_connections"], lang=lang
     )
@@ -125,6 +138,7 @@ def format_template_obj_with(template_obj, lang="jp"):
     template_obj["literature_language"] = format_literal_languages(
         template_obj["literature_language"], lang=lang
     )
+    template_obj["jp_only"] = "Ⓙ" if template_obj["jp_only"] else ""
     return template_obj
 
 
@@ -186,6 +200,7 @@ class CategoryTable:
         for d in self.databases:
             template_obj = {
                 "name": get_name(database=d, lang=lang),
+                "name_note": d.name_note,
                 "provider": d.provider,
                 "platform": d.platform,
                 "url": d.url,
@@ -197,6 +212,7 @@ class CategoryTable:
                 "category": [],  # 不要
                 "literature_language": d.literature_languages,
                 "note": d.note,
+                "jp_only": d.jp_only,
             }
 
             if lang == "en":
@@ -292,6 +308,7 @@ class InitialRows:
             template_obj = {
                 "initial": initial_element,
                 "name": get_name(database=d, lang=lang),
+                "name_note": d.name_note,
                 "provider": d.provider,
                 "platform": d.platform,
                 "url": d.url,
@@ -303,6 +320,7 @@ class InitialRows:
                 "category": d.categories,
                 "literature_language": [],  # 不要
                 "note": d.note,
+                "jp_only": d.jp_only,
             }
 
             if lang == "en":
