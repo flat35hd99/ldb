@@ -3,24 +3,19 @@ from service import ServiceCollection
 from controller import Controller
 import os
 
-# 設定
-# カテゴリ別表示において、言語列を表示するかどうか
-with_literature_language = False
-
 
 def main():
     # データの読み込み
     dfs = pd.read_excel(
         "DBmaster.xlsx",
-        sheet_name=["database", "category", "available_area", "literature_language"],
+        sheet_name=["database", "category", "available_area"],
     )
     database_df = dfs["database"]
     category_df = dfs["category"]
     available_area_df = dfs["available_area"]
-    literature_language_df = dfs["literature_language"]
 
     service = ServiceCollection(
-        database_df, available_area_df, category_df, literature_language_df
+        database_df, available_area_df, category_df
     )
     controller = Controller(service)
 
@@ -31,9 +26,7 @@ def main():
 
     with open("output/category_jp.html", mode="w", encoding="utf8") as f:
         f.write(
-            controller.create_category_html(
-                with_literature_language=with_literature_language
-            )
+            controller.create_category_html()
         )
 
     with open("output/alphabet_jp.html", mode="w", encoding="utf8") as f:
@@ -42,7 +35,7 @@ def main():
     with open("output/category_en.html", mode="w", encoding="utf8") as f:
         f.write(
             controller.create_category_html(
-                lang="en", with_literature_language=with_literature_language
+                lang="en"
             )
         )
 

@@ -1,4 +1,3 @@
-import math
 import pandas as pd
 
 
@@ -24,7 +23,6 @@ class Database:
         platform_en,
         note,
         note_en,
-        literature_languages,
         jp_only,
         name_note,
         name_note_en,
@@ -66,7 +64,7 @@ class Database:
             self.description_en = None
         else:
             self.description_en = description_en
-        self.initial_char = initial_char
+        self.initial_char = str(initial_char)
         self.categories = categories
 
         if pd.isna(provider):
@@ -95,11 +93,6 @@ class Database:
             self.note_en = None
         else:
             self.note_en = note_en
-
-        if pd.isna(literature_languages):
-            self.literature_languages = []
-        else:
-            self.literature_languages = literature_languages
 
         if pd.isna(jp_only):
             self.jp_only = False

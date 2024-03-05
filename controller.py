@@ -7,7 +7,7 @@ class Controller:
     def __init__(self, service: ServiceCollection):
         self.service = service
 
-    def create_category_html(self, lang="jp", with_literature_language=False):
+    def create_category_html(self, lang="jp"):
         # カテゴリのリストを取得する
         categories = self.service.get_all_categories()
 
@@ -35,7 +35,7 @@ class Controller:
             databases = self.service.get_all_databases_by_category_id_service(c.id)
             category_table = CategoryTable(category=c, databases=databases)
             created_html += category_table.str(
-                lang=lang, with_literature_language=with_literature_language
+                lang=lang
             )
 
         # 全体のtemplateに流し込む

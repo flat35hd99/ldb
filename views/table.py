@@ -100,16 +100,6 @@ def format_category(categories, lang="jp"):
     )
 
 
-def format_literal_languages(literature_languages, lang="jp"):
-    if not literature_languages:
-        return ""
-    if lang == "jp":
-        return "<br>".join([l.name for l in literature_languages])
-    elif lang == "en":
-        return "<br>".join([l.name_en for l in literature_languages])
-    else:
-        raise ValueError("lang must be 'jp' or 'en'")
-
 def format_name_note(name_note, lang="jp"):
     if not name_note:
         return ""
@@ -137,9 +127,6 @@ def format_template_obj_with(template_obj, lang="jp"):
     )
     template_obj["category"] = format_category(template_obj["category"], lang=lang)
     template_obj["note"] = template_obj["note"] if template_obj["note"] else ""
-    template_obj["literature_language"] = format_literal_languages(
-        template_obj["literature_language"], lang=lang
-    )
     template_obj["jp_only"] = "Ⓙ" if template_obj["jp_only"] else ""
     return template_obj
 
@@ -161,40 +148,24 @@ class CategoryTable:
         self,
         category: Category,
         databases: Iterator[Database],
-        with_literature_language=False,
     ):
         self.category_model = category
         self.databases = databases
 
-    def str(self, lang="jp", with_literature_language=False):
+    def str(self, lang="jp"):
         # 各行のテンプレートをあらかじめメモリに読み込んでおく
         template_row = ""
         if lang == "jp":
-            if with_literature_language:
-                with open(
-                    "templates/category_table_row_with_literature_language.html",
-                    mode="r",
-                    encoding="utf8",
-                ) as f:
-                    template_row = Template(f.read())
-            else:
-                with open(
-                    "templates/category_table_row.html", mode="r", encoding="utf8"
-                ) as f:
-                    template_row = Template(f.read())
+            with open(
+                "templates/category_table_row.html", mode="r", encoding="utf8"
+            ) as f:
+                template_row = Template(f.read())
+
         elif lang == "en":
-            if with_literature_language:
-                with open(
-                    "templates/en/category_table_row_with_literature_language.html",
-                    mode="r",
-                    encoding="utf8",
-                ) as f:
-                    template_row = Template(f.read())
-            else:
-                with open(
-                    "templates/en/category_table_row.html", mode="r", encoding="utf8"
-                ) as f:
-                    template_row = Template(f.read())
+            with open(
+                "templates/en/category_table_row.html", mode="r", encoding="utf8"
+            ) as f:
+                template_row = Template(f.read())
         else:
             raise ValueError("lang must be 'jp' or 'en'")
 
@@ -212,7 +183,6 @@ class CategoryTable:
                 "color": d.text_background_color(),
                 "available_area": d.available_area.name,
                 "category": [],  # 不要
-                "literature_language": d.literature_languages,
                 "note": d.note,
                 "jp_only": d.jp_only,
             }
@@ -225,18 +195,10 @@ class CategoryTable:
             rows += template_row.substitute(template_obj)
 
         if lang == "jp":
-            if with_literature_language:
-                with open(
-                    "templates/category_table_with_literature_language.html",
-                    mode="r",
-                    encoding="utf8",
-                ) as f:
-                    template_table = Template(f.read())
-            else:
-                with open(
-                    "templates/category_table.html", mode="r", encoding="utf8"
-                ) as f:
-                    template_table = Template(f.read())
+            with open(
+                "templates/category_table.html", mode="r", encoding="utf8"
+            ) as f:
+                template_table = Template(f.read())
 
             result = template_table.substitute(
                 {
@@ -247,18 +209,10 @@ class CategoryTable:
             )
             return result
         elif lang == "en":
-            if with_literature_language:
-                with open(
-                    "templates/en/category_table_with_literature_language.html",
-                    mode="r",
-                    encoding="utf8",
-                ) as f:
-                    template_table = Template(f.read())
-            else:
-                with open(
-                    "templates/en/category_table.html", mode="r", encoding="utf8"
-                ) as f:
-                    template_table = Template(f.read())
+            with open(
+                "templates/en/category_table.html", mode="r", encoding="utf8"
+            ) as f:
+                template_table = Template(f.read())
 
             result = template_table.substitute(
                 {
@@ -320,7 +274,6 @@ class InitialRows:
                 "color": d.text_background_color(),
                 "available_area": d.available_area.name,
                 "category": d.categories,
-                "literature_language": [],  # 不要
                 "note": d.note,
                 "jp_only": d.jp_only,
             }
