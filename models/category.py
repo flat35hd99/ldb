@@ -4,3 +4,7 @@ class Category:
         self.name = name
         self.name_en = name_en
         self.html_id = html_id
+    def __eq__(self, other: object) -> bool:
+        if isinstance(other, Category):
+            return self.id == other.id
+        return False

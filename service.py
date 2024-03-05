@@ -45,20 +45,28 @@ class ServiceCollection:
         avalable_area_df: pd.DataFrame,
         category_df: pd.DataFrame,
     ) -> None:
-        self.database_df = database_df
+        # databaseの初期化前にavailable_areaとcategoryを初期化する必要がある
         self.available_area_df = avalable_area_df
+        self.available_areas = None
+        
         self.category_df = category_df
-        self.categories = None
-
-    def get_all_databases_service(self) -> Iterator[Database]:
+        self.categories = []
+        for row in self.category_df.itertuples(index=False):
+            self.categories.append(
+                Category(
+                    id=row.id, name=row.name, name_en=row.name_en, html_id=row.html_id
+                )
+            )
+            
+        self.database_df = database_df
+        self.databases = []
         for row in self.database_df.itertuples(index=False):
             # Get AvailableArea
-            # itertules() shoule return a single row
             area = self.get_available_area_by_id(row.available_area_id)
 
             # Get category
             # A Database belongs to one or more categories
-            all_categories = self.get_all_categories()
+            all_categories = self.categories
             categories = []
             if type(row.category_id) == int:
                 for c in all_categories:
@@ -73,23 +81,10 @@ class ServiceCollection:
                             categories.append(c)
 
             d = factory_database(row, area, categories)
-            yield d
+            self.databases.append(d)
 
     def get_all_categories(self) -> Iterator[Category]:
-        if self.categories:
-            return self.categories
-
-        categories = []
-        for row in self.category_df.itertuples(index=False):
-            categories.append(
-                Category(
-                    id=row.id, name=row.name, name_en=row.name_en, html_id=row.html_id
-                )
-            )
-
-        self.categories = categories
-
-        return categories
+        return self.categories
 
     def get_all_databases_by_category_id_service(
         self, category_id
@@ -103,30 +98,12 @@ class ServiceCollection:
         except NameError:
             raise ValueError("Category not found")
 
-        db_df = self.database_df[self.database_df.category_id == category_id]
+        filtered_databases = []
+        for d in self.databases:
+            if category in d.categories:
+                filtered_databases.append(d)
 
-        for row in db_df.itertuples(index=False):
-            area = self.get_available_area_by_id(row.available_area_id)
-
-            # Get category
-            # A Database belongs to one or more categories
-            all_categories = self.get_all_categories()
-            categories = []
-            if type(row.category_id) == int:
-                for c in all_categories:
-                    if c.id == row.category_id:
-                        categories.append(c)
-                        break
-            else:
-                for category_id in row.category_id:
-                    # Find category from categories
-                    for c in all_categories:
-                        if c.id == category_id:
-                            categories.append(c)
-                            break
-
-            d = factory_database(row, area, categories)
-            yield d
+        return filtered_databases
 
     def get_available_area_by_id(self, available_area_id):
         try:
@@ -155,7 +132,7 @@ class ServiceCollection:
 
     def get_all_databases_by_initial(self, initial_char: str) -> Iterator[Database]:
         result = []
-        for d in self.get_all_databases_service():
+        for d in self.databases:
             if d.initial_char == initial_char:
                 result.append(d)
 
