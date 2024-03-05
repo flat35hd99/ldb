@@ -1,3 +1,4 @@
 __pycache__/
 *.xlsx
+!DBmaster_example.xlsx
 output/
