@@ -5,7 +5,7 @@ import os
 
 # 設定
 # カテゴリ別表示において、言語列を表示するかどうか
-with_literature_language = True
+with_literature_language = False
 
 
 def main():
