@@ -65,7 +65,8 @@ class ServiceCollection:
                     if c.id == row.category_id:
                         categories.append(c)
             else:
-                for category_id in row.category_id:
+                # category_idに複数のカテゴリが入っている場合
+                for category_id in [int(x) for x in row.category_id.split(",")]:
                     # Find category from categories
                     for c in all_categories:
                         if c.id == category_id:
