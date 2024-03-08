@@ -74,11 +74,14 @@ class ServiceCollection:
                         categories.append(c)
             else:
                 # category_idに複数のカテゴリが入っている場合
-                for category_id in [int(x) for x in row.category_id.split(",")]:
-                    # Find category from categories
-                    for c in all_categories:
-                        if c.id == category_id:
-                            categories.append(c)
+                try:
+                    for category_id in [int(x) for x in row.category_id.split(",")]:
+                        # Find category from categories
+                        for c in all_categories:
+                            if c.id == category_id:
+                                categories.append(c)
+                except AttributeError:
+                    raise ValueError(f"database_id: {row.id}のcategory_idが不正な値です。カテゴリのidは,(カンマ)区切りです。")
 
             d = factory_database(row, area, categories)
             self.databases.append(d)
