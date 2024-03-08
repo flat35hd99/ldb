@@ -319,23 +319,18 @@ class InitialRows:
         return rows
 
     def filter_categories(self, categories: list[Category]):
-        # カテゴリに総合分野が含まれていないときは、そのまま
-        # カテゴリに総合分野が含まれているかつ、その他に自然科学、生命科学、人文科学、社会科学のみを含むときは
-        # 自然科学、生命科学、人文科学、社会科学を除外する
-        # カテゴリに総合分野が含まれているかつ、その他に自然科学、生命科学、人文科学、社会科学以外を含むときは
-        # 総合分野を除外する
-        sougou_id = 1
+        # アルファベット表示における総合分野、総合分野(国内）、総合分野（国外）
+        # と社会科学、人文科学、自然科学、生命科学に関する取扱い
+        # sougou_idsに含まれるカテゴリがカテゴリの中にあるとき、
+        # shizen_seimei_jinbun_syakai_idsのカテゴリを除去する
+        sougou_ids = {1, 17, 18}
         shizen_seimei_jinbun_syakai_ids = {3, 4, 15, 16}
 
         category_ids = set([c.id for c in categories])
-        if sougou_id not in category_ids:
+        if sougou_ids not in category_ids:
+            # カテゴリに総合分野が含まれていないときは、そのまま
             return categories
         else:
-            if set(category_ids).issubset(
-                shizen_seimei_jinbun_syakai_ids | {sougou_id}
-            ):
-                return [
-                    c for c in categories if c.id not in shizen_seimei_jinbun_syakai_ids
-                ]
-            else:
-                return [c for c in categories if c.id != sougou_id]
+            # カテゴリに総合分野を含むときは、{自然科学、生命科学、人文科学、社会科学}を除外する
+            ids = category_ids - shizen_seimei_jinbun_syakai_ids
+            return [c for c in categories if c.id in ids]
