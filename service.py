@@ -86,13 +86,14 @@ class ServiceCollection:
             d = factory_database(row, area, categories)
             self.databases.append(d)
 
+    # 有効なカテゴリのみを取得する
     def get_all_categories(self) -> Iterator[Category]:
-        return self.categories
+        return [c for c in self.categories if len(self.get_all_databases_by_category_id_service(c.id)) > 0]
 
     def get_all_databases_by_category_id_service(
         self, category_id
     ) -> Iterator[Database]:
-        for c in self.get_all_categories():
+        for c in self.categories:
             if c.id == category_id:
                 category = c
                 break
