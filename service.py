@@ -131,7 +131,7 @@ class ServiceCollection:
         return available_area
 
     def get_all_initials(self) -> Iterator[str]:
-        return [str(s) for s in list(self.database_df.initial.unique())]
+        return sorted([str(s) for s in list(self.database_df.initial.unique())])
 
     def get_all_databases_by_initial(self, initial_char: str) -> Iterator[Database]:
         result = []
