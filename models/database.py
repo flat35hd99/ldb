@@ -4,7 +4,6 @@ import pandas as pd
 class Database:
     def __init__(
         self,
-        id,
         name,
         name_en,
         url,
@@ -27,7 +26,6 @@ class Database:
         name_note,
         name_note_en,
     ) -> None:
-        self.id = id
         self.name = name
         if pd.isna(name_en):
             self.name_en = None

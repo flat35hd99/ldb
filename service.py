@@ -7,7 +7,6 @@ from collections.abc import Iterator
 
 def factory_database(row, area, categories):
     d = Database(
-        id=row.id,
         name=row.name,
         name_en=row.name_en,
         name_note=row.name_note,
