@@ -23,6 +23,10 @@ def update_template_obj_with(template_obj, database, lang="en"):
             template_obj["platform"] = database.platform_en
         if database.description_en:
             template_obj["description"] = database.description_en
+        # もし英語の説明文が空だったら、日本語の説明文を入れずに、空にしたいとき
+        # 次の二行のコメントを外す
+        # else:
+        #     template_obj["description"] = ""
         if database.simultaneous_connections_en:
             template_obj[
                 "simultaneous_connections"
