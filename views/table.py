@@ -136,10 +136,25 @@ def get_name(database, lang="jp"):
     if lang == "jp":
         return database.name
     elif lang == "en":
-        return database.name_en
+        return database.name_en if database.name_en else database.name
     else:
         raise ValueError("lang must be 'jp' or 'en'")
 
+def read_table_row_name(lang="jp"):
+    if lang == "jp":
+        with open(
+            "templates/table_row_name.html", mode="r", encoding="utf8"
+        ) as f:
+            template_table_row_name = Template(f.read())
+    elif lang == "en":
+        with open(
+            "templates/en/table_row_name.html", mode="r", encoding="utf8"
+        ) as f:
+            template_table_row_name = Template(f.read())
+    return template_table_row_name
+
+def read_table_row_name_element(lang="jp"):
+    return Template('<a href="$url">$name</a>')
 
 class CategoryTable:
     category_model: Category
@@ -155,6 +170,8 @@ class CategoryTable:
 
     def str(self, lang="jp"):
         # 各行のテンプレートをあらかじめメモリに読み込んでおく
+        template_row_name = read_table_row_name(lang=lang)
+        template_row_name_element = read_table_row_name_element(lang=lang)
         template_row = ""
         if lang == "jp":
             with open(
@@ -190,8 +207,13 @@ class CategoryTable:
 
             if lang == "en":
                 update_template_obj_with(template_obj, d, lang=lang)
-
+            
             template_obj = format_template_obj_with(template_obj, lang=lang)
+            if template_obj["url"]:
+                template_obj["name_element"] = template_row_name_element.substitute(template_obj)
+            else:
+                template_obj["name_element"] = template_obj["name"]
+            template_obj["name_line"] = template_row_name.substitute(template_obj)
 
             rows += template_row.substitute(template_obj)
 
@@ -235,6 +257,8 @@ class InitialRows:
 
     def str(self, lang="jp"):
         # 各行のテンプレートをあらかじめメモリに読み込んでおく
+        template_row_name = read_table_row_name(lang=lang)
+        template_row_name_element = read_table_row_name_element(lang=lang)
         template_row = ""
         if lang == "jp":
             with open(
@@ -281,6 +305,12 @@ class InitialRows:
                 update_template_obj_with(template_obj, d, lang=lang)
 
             template_obj = format_template_obj_with(template_obj, lang=lang)
+            if template_obj["url"]:
+                template_obj["name_element"] = template_row_name_element.substitute(template_obj)
+            else:
+                template_obj["name_element"] = template_obj["name"]
+            template_obj["name_line"] = template_row_name.substitute(template_obj)
+            
             rows += template_row.substitute(template_obj)
 
             if is_first:

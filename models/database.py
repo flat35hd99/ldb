@@ -44,7 +44,10 @@ class Database:
         else:
             self.name_note_en = name_note_en
 
-        self.url = url
+        if pd.isna(url):
+            self.url = None
+        else:
+            self.url = url
         if pd.isna(url_en):
             self.url_en = None
         else:
