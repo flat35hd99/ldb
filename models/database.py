@@ -26,6 +26,7 @@ class Database:
         jp_only,
         name_note,
         name_note_en,
+        chinese,
     ) -> None:
         self.id = id
         self.name = name
@@ -101,6 +102,13 @@ class Database:
             self.jp_only = False
         else:
             self.jp_only = bool(jp_only)
+        
+        if pd.isna(chinese):
+            # 空だったら
+            self.chinese = "私は鳥派です。"
+        else:
+            # 空じゃなかったら
+            self.chinese = chinese
 
     def text_is_available_remote(self):
         return "R" if self.is_available_remote else "no"

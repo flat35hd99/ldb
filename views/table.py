@@ -299,6 +299,7 @@ class InitialRows:
                 "category": self.filter_categories(d.categories),
                 "note": d.note,
                 "jp_only": d.jp_only,
+                "chinese": d.chinese,
             }
 
             if lang == "en":

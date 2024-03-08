@@ -29,6 +29,7 @@ def factory_database(row, area, categories):
         note=row.note,
         note_en=row.note_en,
         jp_only=row.jp_only,
+        chinese=row.chinese
     )
     return d
 
